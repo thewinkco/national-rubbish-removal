@@ -1,0 +1,165 @@
+@import "tailwindcss";
+
+/*
+ * Design tokens.
+ * Warm, quiet palette: sandstone paper + warm charcoal, with the NRR logo orange
+ * kept as the single accent and used sparingly (CTAs, small marks).
+ */
+@theme {
+  --color-brand: #f57129; /* exact orange from the NRR logo SVG, fills only */
+  --color-brand-600: #e2631f;
+  --color-brand-700: #b0511e;
+  --color-brand-50: #fdf4ed;
+  --color-brand-100: #f9e1cf;
+  /* Orange for TEXT on light surfaces (5.6:1 on paper). */
+  --color-brand-ink: #a54a15;
+  /* Text/icons placed ON a brand-orange fill. White on orange fails WCAG AA. */
+  --color-on-brand: #ffffff;
+
+  /* Warm charcoal, never pure black. */
+  --color-ink: #1d1c1a;
+  --color-ink-900: #211f1d;
+  --color-ink-800: #262421;
+  --color-ink-700: #35332f;
+  --color-ink-600: #4c4943;
+
+  /* Sandstone neutrals. */
+  --color-paper: #fbf9f5;
+  --color-mist: #f3efe7;
+  --color-sand: #ebe4d8;
+  --color-line: #e3dccf;
+  --color-muted: #6c675e;
+
+  --color-good: #2f6b45; /* eucalypt green, for ticks only */
+
+  --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-newsreader), ui-serif, Georgia, serif;
+
+  --shadow-card: 0 1px 2px rgb(38 36 33 / 0.04), 0 12px 32px -20px rgb(38 36 33 / 0.18);
+  --shadow-lift: 0 2px 4px rgb(38 36 33 / 0.04), 0 28px 56px -30px rgb(38 36 33 / 0.32);
+  --shadow-press: inset 0 -1px 0 rgb(29 28 26 / 0.18), 0 1px 2px rgb(29 28 26 / 0.12);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+
+  --animate-marquee: marquee 60s linear infinite;
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+}
+
+@keyframes ba-fade {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+html {
+  scroll-padding-top: 7rem;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--color-paper);
+  color: var(--color-ink-700);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+}
+
+@utility container-x {
+  @apply mx-auto w-full max-w-[1240px] px-4 sm:px-6 lg:px-8;
+}
+/* Sentence-case label with a short rule, calmer than tracked all-caps. */
+@utility eyebrow {
+  @apply inline-flex items-center gap-3 text-[13px] font-medium tracking-[0.01em] text-brand-ink;
+  &::before { content: ""; @apply h-px w-6 bg-current opacity-70; }
+}
+@utility h-display {
+  @apply font-display tracking-[-0.02em] text-balance;
+}
+@utility btn {
+  @apply inline-flex items-center justify-center gap-2 rounded-[10px] px-5 py-3.5 text-[15px] font-semibold transition duration-300 ease-out-expo active:translate-y-px focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand disabled:cursor-not-allowed disabled:opacity-60;
+}
+@utility btn-primary {
+  @apply btn bg-brand text-on-brand shadow-press hover:bg-brand-600;
+}
+@utility btn-dark {
+  @apply btn bg-ink-800 text-white hover:bg-ink;
+}
+@utility btn-ghost {
+  @apply btn border border-white/25 text-white hover:border-white/50 hover:bg-white/5;
+}
+@utility btn-outline {
+  @apply btn border border-ink-800/20 bg-transparent text-ink-800 hover:border-ink-800 hover:bg-white;
+}
+@utility card {
+  @apply rounded-2xl border border-line bg-white;
+}
+@utility field {
+  @apply w-full rounded-[10px] border border-line bg-white px-4 py-3 text-[15px] text-ink-800 outline-none transition placeholder:text-muted focus:border-ink-600 focus:ring-4 focus:ring-ink-800/5;
+}
+@utility label {
+  @apply mb-1.5 block text-sm font-medium text-ink-800;
+}
+@utility prose-nrr {
+  @apply text-[17px] leading-[1.7] text-ink-600;
+  & p { @apply mb-4; }
+  & h3 { @apply mt-10 mb-3 font-display text-2xl text-ink-800; }
+  & ul { @apply mb-5 space-y-2 pl-0; }
+  & li { @apply relative pl-6; }
+  & li::before { content: ""; @apply absolute top-[0.75em] left-0 h-px w-3 bg-brand; }
+  & a { @apply font-medium text-brand-ink underline decoration-brand/40 underline-offset-4 hover:decoration-brand; }
+  & strong { @apply font-semibold text-ink-800; }
+}
+
+/*
+ * Serif display type is always set at a single, book-like weight.
+ * Unlayered, so it wins over any legacy font-bold/extrabold utilities on display text.
+ */
+.h-display,
+.font-display {
+  font-weight: 450;
+  font-optical-sizing: auto;
+  font-feature-settings: "kern", "liga", "onum" 0;
+}
+.font-display em,
+.h-display em { font-style: italic; }
+
+.tabular-nums, dl dt { font-variant-numeric: tabular-nums; }
+
+/* Interaction baseline: Tailwind v4 preflight resets button cursor to default. */
+button:not(:disabled),
+[role="button"],
+summary,
+label[for],
+select { cursor: pointer; }
+
+:where(a, button, summary, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--color-brand);
+  outline-offset: 2px;
+}
+
+/* Subtle paper grain: breaks digital flatness on large neutral surfaces. */
+.grain { position: relative; isolation: isolate; }
+.grain::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.35;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.15 0 0 0 0 0.13 0 0 0 0 0.1 0 0 0 0.09 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.marquee-track:hover { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track { animation: none; }
+}
+
+/* Native <details> accordion */
+details > summary { list-style: none; }
+details > summary::-webkit-details-marker { display: none; }
+details[open] .faq-icon { transform: rotate(45deg); }
