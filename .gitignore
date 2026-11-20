@@ -42,3 +42,6 @@ next-env.d.ts
 
 # static deploy archive (rebuild from out/)
 *.zip
+
+# GHL credentials for the lead endpoint
+/public/api/config.php

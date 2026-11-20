@@ -140,12 +140,24 @@ export function QuoteForm({ defaultService, heading = "Get your fixed price", co
     };
 
     try {
-      await fetch(SITE.leadEndpoint, {
-        method: "POST",
-        mode: "no-cors",
-        headers: { "Content-Type": "text/plain;charset=UTF-8" },
-        body: JSON.stringify(payload),
-      });
+      // Google Sheet (existing backup) and GoHighLevel run side by side; either landing counts as success.
+      const [sheet, crm] = await Promise.allSettled([
+        fetch(SITE.leadEndpoint, {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "text/plain;charset=UTF-8" },
+          body: JSON.stringify(payload),
+        }),
+        fetch(SITE.crmEndpoint, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ ...payload, company: get("company") }),
+          keepalive: true,
+        }).then((r) => {
+          if (!r.ok) throw new Error(`CRM ${r.status}`);
+        }),
+      ]);
+      if (sheet.status === "rejected" && crm.status === "rejected") throw new Error("Lead not delivered");
       track("quote_form_submit", { form_name: "quote_form", services: services.join(","), size: sizeLabel, page: pathname });
       setStatus("success");
       scrollTo(root.current);
@@ -210,6 +222,8 @@ export function QuoteForm({ defaultService, heading = "Get your fixed price", co
       </div>
 
       <form onSubmit={onSubmit} onFocus={markStarted} noValidate className="p-5 sm:p-7">
+        {/* Honeypot: hidden from people, filled by bots; the GHL endpoint drops those submissions. */}
+        <input type="text" name="company" tabIndex={-1} autoComplete="off" aria-hidden className="absolute -left-[9999px] h-px w-px opacity-0" />
         {/* Step 1 */}
         <m.div className={step === 1 ? "space-y-6" : "hidden"} initial={false} animate={step === 1 ? { opacity: 1, x: 0 } : { opacity: 0, x: -24 }}>
           <fieldset>

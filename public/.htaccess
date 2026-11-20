@@ -4,6 +4,11 @@
 # common variants/guesses and the apex domain, so nothing that used to resolve now 404s.
 
 Options -MultiViews -Indexes
+
+# GHL credentials for api/lead.php: never served over the web.
+<FilesMatch "^config(\.example)?\.php$">
+Require all denied
+</FilesMatch>
 DirectorySlash Off
 ErrorDocument 404 /404.html
 
