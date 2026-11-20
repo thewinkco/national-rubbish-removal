@@ -161,4 +161,32 @@ if ($fieldId !== '' && $photos) {
   foreach ($tmpFiles as $t) @unlink($t);
 }
 
-out(200, ['ok' => true, 'attached' => $attached]);
+// 5. Opportunity in the marketing pipeline. Skipped if the contact already has an open one there,
+//    so a repeat enquiry doesn't create a duplicate deal.
+$opportunity = null;
+if (($cfg['pipeline_id'] ?? '') !== '') {
+  $q = http_build_query(['location_id' => $cfg['location_id'], 'contact_id' => $contactId, 'pipeline_id' => $cfg['pipeline_id'], 'status' => 'open', 'limit' => 1]);
+  [$code, $res] = ghl($cfg, 'GET', "/opportunities/search?$q");
+  $existing = $res['opportunities'][0]['id'] ?? null;
+  if ($existing) {
+    $opportunity = 'existing';
+  } else {
+    preg_match('/\d[\d,]*/', $str('estimate', 60), $m);
+    $value = isset($m[0]) ? (float)str_replace(',', '', $m[0]) : 0;
+    $opp = array_filter([
+      'locationId' => $cfg['location_id'],
+      'pipelineId' => $cfg['pipeline_id'],
+      'pipelineStageId' => $cfg['pipeline_stage_id'] ?? '',
+      'contactId' => $contactId,
+      'name' => $name . ' – ' . ($services ? implode(', ', $services) : 'Rubbish removal') . " ($location)",
+      'status' => 'open',
+      'source' => $cfg['opportunity_source'] ?? 'Website',
+      'monetaryValue' => $value ?: null,
+    ], fn($v) => $v !== '' && $v !== null);
+    [$code, $res] = ghl($cfg, 'POST', '/opportunities/', $opp);
+    if ($code < 300) $opportunity = 'created';
+    else error_log('GHL opportunity failed ' . $code . ' ' . json_encode($res));
+  }
+}
+
+out(200, ['ok' => true, 'attached' => $attached, 'opportunity' => $opportunity]);
