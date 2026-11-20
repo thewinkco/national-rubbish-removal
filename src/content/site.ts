@@ -35,6 +35,8 @@ export const SITE = {
   ],
   recycleRate: "95%",
   gtmId: process.env.NEXT_PUBLIC_GTM_ID ?? "GTM-T2DRQQ74",
+  // GoHighLevel chat widget (GHL → Sites → Chat Widget → Get code).
+  chatWidgetId: process.env.NEXT_PUBLIC_GHL_CHAT_WIDGET_ID ?? "6affbce731ba0fcd4f926411",
   // Existing lead pipeline (Google Apps Script → Sheet) and media uploads (Cloudinary unsigned preset).
   // Both are the same endpoints the current site posts to, so leads keep landing in the same place.
   leadEndpoint:

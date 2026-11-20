@@ -5,6 +5,7 @@ import "./globals.css";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { MobileCtaBar } from "@/components/MobileCtaBar";
+import { ChatWidgetOffset } from "@/components/ChatWidgetOffset";
 import { MotionProvider } from "@/components/motion/MotionProvider";
 import { SmoothScroll } from "@/components/motion/SmoothScroll";
 import { JsonLd } from "@/components/JsonLd";
@@ -51,6 +52,20 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
                 title="Google Tag Manager"
               />
             </noscript>
+          </>
+        )}
+        {SITE.chatWidgetId && (
+          // GoHighLevel chat widget. Loaded once the page is idle so it doesn't slow the first paint.
+          // Its title, intro and prompt text are edited in GHL → Sites → Chat Widget, not here.
+          <>
+            <Script
+              id="ghl-chat"
+              src="https://widgets.leadconnectorhq.com/loader.js"
+              data-resources-url="https://widgets.leadconnectorhq.com/chat-widget/loader.js"
+              data-widget-id={SITE.chatWidgetId}
+              strategy="lazyOnload"
+            />
+            <ChatWidgetOffset />
           </>
         )}
         <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-full focus:bg-white focus:px-4 focus:py-2 focus:font-bold">
