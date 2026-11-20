@@ -1,25 +1,96 @@
 import type { NextConfig } from "next";
 
-// Static HTML export: `next build` writes the whole site to `out/`, ready to upload to any static host.
-// A static export can't run Next's redirects(), headers() or image optimizer, so:
-//   - URL redirects (apex → www, aliases, old service/suburb paths) and security/cache headers
-//     live in public/.htaccess (copied into out/), for Apache-based hosts such as Hostinger or cPanel.
-//   - Images are served as-is; the files in public/images are already compressed WebP.
+// Runs as a Node.js server (`next build --webpack` then `next start`) on Hostinger's Node.js hosting.
+// Tailwind runs through PostCSS (postcss.config.mjs). Builds use Webpack, which runs PostCSS in-process;
+// Turbopack runs it in a separate Node process that limited build hosts can kill
+// ("node process exited before we could connect to it").
+
+// URL preservation strategy
+// ─────────────────────────
+// Every URL in the live sitemap (48) is served at the exact same path by this app,
+// so no redirects are needed for indexed pages. The rules below only catch common
+// variants/guesses and the apex domain, so nothing that used to resolve now 404s.
+const SERVICE_SLUGS = [
+  "household-rubbish-removal", "green-waste-removal", "deceased-estate-clearance", "unwanted-furniture-removal",
+  "garage-clean-out", "mattress-removal", "strata-rubbish-removal", "office-rubbish-removal", "office-cubicle-removal",
+  "retail-strip-out-removal", "warehouse-rubbish-removal", "end-of-lease-rubbish-removal", "building-materials-disposal",
+  "construction-site-clean-up", "scrap-metal-removal", "brick-and-concrete-removal", "timber-removal", "skip-bin-alternatives",
+];
+
+const ALIASES: [string, string][] = [
+  ["/home", "/"],
+  ["/index", "/"],
+  ["/index.html", "/"],
+  ["/about-us", "/about"],
+  ["/contact-us", "/contact"],
+  ["/get-a-quote", "/contact"],
+  ["/quote", "/contact"],
+  ["/free-quote", "/contact"],
+  ["/book", "/contact"],
+  ["/booking", "/contact"],
+  ["/pricing", "/quote-estimator"],
+  ["/prices", "/quote-estimator"],
+  ["/price", "/quote-estimator"],
+  ["/cost", "/quote-estimator"],
+  ["/calculator", "/quote-estimator"],
+  ["/estimator", "/quote-estimator"],
+  ["/locations", "/location"],
+  ["/service-areas", "/location"],
+  ["/areas", "/location"],
+  ["/privacy", "/policy"],
+  ["/privacy-policy", "/policy"],
+  ["/terms-and-conditions", "/terms"],
+  ["/terms-of-service", "/terms"],
+  ["/residential-rubbish-removal", "/services#residential-rubbish-removal"],
+  ["/commercial-rubbish-removal", "/services#commercial-rubbish-removal"],
+  ["/construction-rubbish-removal", "/services#construction-rubbish-removal"],
+  ["/skip-bin-alternative", "/skip-bin-alternatives"],
+  ["/furniture-removal", "/unwanted-furniture-removal"],
+  ["/garage-cleanout", "/garage-clean-out"],
+  ["/garage-clean-up", "/garage-clean-out"],
+];
+
 const nextConfig: NextConfig = {
-  output: "export",
-  // Fully static marketing site: dynamicParams = false means unknown slugs fall through to 404.html.
+  // Pages are still prerendered at build time; [slug] uses dynamicParams = false so unknown slugs 404.
   poweredByHeader: false,
   trailingSlash: false,
-  turbopack: {
-    rules: {
-      "*.css": {
-        loaders: ["@tailwindcss/turbopack"],
-        as: "*.css",
-      },
-    },
-  },
   images: {
+    // Images in public/ are already compressed WebP; skipping on-the-fly optimisation saves CPU on shared hosting.
     unoptimized: true,
+  },
+  async redirects() {
+    return [
+      // Apex → www (canonical host on the live site).
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "nationalrubbishremoval.com.au" }],
+        destination: "https://www.nationalrubbishremoval.com.au/:path*",
+        permanent: true,
+      },
+      ...ALIASES.map(([source, destination]) => ({ source, destination, permanent: true })),
+      // /services/<slug> → /<slug>
+      ...SERVICE_SLUGS.map((slug) => ({ source: `/services/${slug}`, destination: `/${slug}`, permanent: true })),
+      // /rubbish-removal-<suburb> → /<suburb>
+      { source: "/rubbish-removal-:suburb", destination: "/:suburb", permanent: true },
+    ];
+  },
+  async headers() {
+    return [
+      {
+        source: "/:path*",
+        headers: [
+          { key: "X-Content-Type-Options", value: "nosniff" },
+          { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+          { key: "X-Frame-Options", value: "SAMEORIGIN" },
+          { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=()" },
+          { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains; preload" },
+        ],
+      },
+      {
+        source: "/:all*(webp|jpg|png|svg|avif)",
+        headers: [{ key: "Cache-Control", value: "public, max-age=2592000, stale-while-revalidate=86400" }],
+      },
+    ];
   },
 };
 

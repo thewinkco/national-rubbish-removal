@@ -40,8 +40,8 @@ export const SITE = {
   leadEndpoint:
     process.env.NEXT_PUBLIC_LEAD_ENDPOINT ??
     "https://script.google.com/macros/s/AKfycby8JvAaP204NeE44FiQzOlyKlWssbYDMnv3mLs9k9X2LBH529Ngse5nKYiyuIBmebCB0g/exec",
-  // GoHighLevel: public/api/lead.php on the PHP host holds the GHL token and creates the contact.
-  crmEndpoint: process.env.NEXT_PUBLIC_CRM_ENDPOINT ?? "/api/lead.php",
+  // GoHighLevel: src/app/api/lead/route.ts holds the GHL token (env vars) and creates the contact.
+  crmEndpoint: process.env.NEXT_PUBLIC_CRM_ENDPOINT ?? "/api/lead",
   cloudinaryCloud: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD ?? "oakve7mf",
   cloudinaryPreset: process.env.NEXT_PUBLIC_CLOUDINARY_PRESET ?? "nrr_website",
 } as const;
