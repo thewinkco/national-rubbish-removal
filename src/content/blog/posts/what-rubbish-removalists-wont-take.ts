@@ -93,7 +93,7 @@ export const post: BlogPost = {
         "Furniture of every size, including [couches, wardrobes and bed frames](/unwanted-furniture-removal)",
         "[Mattresses](/mattress-removal) and bed bases",
         "Fridges, washing machines, dryers and other whitegoods",
-        "[Green waste](/green-waste-removal): branches, clippings, palm fronds and stumps",
+        "[Green waste](/green-waste-removal): branches, clippings, palm fronds and stumps (see our [green waste guide](/blog/green-waste-removal-sydney))",
         "Renovation waste: timber, plasterboard, tiles, bricks and concrete",
         "[Scrap metal](/scrap-metal-removal), BBQs (with the gas bottle removed), bikes and gym equipment",
         "Office furniture, filing cabinets and retail fit-outs",
