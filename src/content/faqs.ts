@@ -1,4 +1,6 @@
-import { EXCLUDED_ITEMS } from "./site";
+import { EXCLUDED_ITEMS, formatPrice, fromPrice, getJobType } from "./site";
+
+const greenFrom = formatPrice(Math.min(...Object.values(getJobType("green-waste-removal").tiers).map((t) => t![0])));
 
 export type Faq = { q: string; a: string };
 
@@ -14,7 +16,7 @@ export const GENERAL_FAQS: Faq[] = [
   },
   {
     q: "How much does rubbish removal cost?",
-    a: "You pay for the space your rubbish takes up in the truck, not for guesswork. Use our instant price estimator for a ballpark in 10 seconds, or send photos for an exact figure. Larger or longer jobs can be priced by the hour: $90 residential, $120 commercial and $150 construction, with a $250 minimum. Either way, your price covers labour, loading, sweep-up and disposal fees, and it's confirmed before we lift anything.",
+    a: `You pay a fixed price for the space your rubbish takes up in the truck. Household pickups start from ${formatPrice(fromPrice("residential-rubbish-removal"))}, clean green waste from ${greenFrom}, and builder waste and commercial loads from ${formatPrice(fromPrice("construction-rubbish-removal"))}. See every load size in our [price guide](/quote-estimator), or send photos for an exact figure. Your price covers labour, loading, sweep-up and disposal fees, and it's confirmed before we lift anything.`,
   },
   {
     q: "Is it cheaper than hiring a skip bin?",

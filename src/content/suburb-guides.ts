@@ -1,7 +1,7 @@
 // Local long-form content for suburb pages that have no migrated legacy content.
 // Council rules in the guides were checked on each council's own website and are linked inline.
 import type { LegacySection } from "@/lib/legacy";
-import { PRICING, formatPrice } from "./site";
+import { formatPrice, fromPrice, type CategoryId } from "./site";
 import type { Suburb } from "./suburbs";
 import type { RichGuide } from "./guides/types";
 import { INNER_CITY_GUIDES } from "./guides/inner-city";
@@ -10,7 +10,7 @@ import { WESTERN_SYDNEY_GUIDES } from "./guides/western-sydney";
 
 const GUIDES: Record<string, RichGuide> = { ...INNER_CITY_GUIDES, ...INNER_WEST_GUIDES, ...WESTERN_SYDNEY_GUIDES };
 
-const price = (id: (typeof PRICING)[number]["id"]) => formatPrice(PRICING.find((p) => p.id === id)!.minCharge);
+const price = (id: CategoryId) => formatPrice(fromPrice(id));
 
 /** Builds body sections and local FAQs for a suburb page from its guide, or returns null if none exists. */
 export function getSuburbGuide(suburb: Suburb): { body: LegacySection[]; faqs: { q: string; a: string }[]; faqHeading: string } | null {

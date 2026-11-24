@@ -122,7 +122,7 @@ export const post: BlogPost = {
     {
       type: "steps",
       items: [
-        "Estimate your volume. A single garage packed waist-high is roughly a full truck (about 10 m³).",
+        "Estimate your volume. A single garage packed waist-high is roughly a full truck (8 m³).",
         "Get a price from our [estimator](/quote-estimator) and a skip quote for the same volume.",
         "Add the permit (if the skip goes on the street) and any likely overweight or item fees to the skip price.",
         "Ask yourself who is doing the loading, and how long it will take.",
@@ -149,7 +149,7 @@ export const post: BlogPost = {
     },
     {
       q: "What size skip equals a full rubbish removal truck?",
-      a: "A full NRR truck holds about 10 cubic metres, similar to a large 9–10 m³ skip. A 6 m³ skip is closer to a half-to-three-quarter truck.",
+      a: "A full NRR truck holds 8 cubic metres, similar to a large 8 m³ skip. A 6 m³ skip is about three-quarters of a truck, and a 4 m³ skip is half a truck.",
     },
     {
       q: "Can you take building rubble a skip won't?",

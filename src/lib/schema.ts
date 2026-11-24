@@ -1,4 +1,4 @@
-import { SITE, PRICING } from "@/content/site";
+import { SITE, fromPrice, type CategoryId } from "@/content/site";
 import { SERVICES, CATEGORIES } from "@/content/services";
 import { SUBURBS } from "@/content/suburbs";
 
@@ -100,7 +100,7 @@ export function faqSchema(faqs: { q: string; a: string }[]) {
 }
 
 export function serviceSchema(opts: { name: string; description: string; path: string; areaName?: string; categoryId?: string }) {
-  const pricing = PRICING.find((p) => p.id === opts.categoryId);
+  const from = opts.categoryId ? fromPrice(opts.categoryId as CategoryId) : null;
   return {
     "@type": "Service",
     "@id": `${abs(opts.path)}#service`,
@@ -110,17 +110,13 @@ export function serviceSchema(opts: { name: string; description: string; path: s
     url: abs(opts.path),
     provider: { "@id": BUSINESS_ID },
     areaServed: { "@type": opts.areaName ? "Place" : "AdministrativeArea", name: opts.areaName ?? SITE.areaServed },
-    ...(pricing && {
+    ...(from && {
       offers: {
         "@type": "Offer",
+        url: abs(opts.path),
         priceCurrency: "AUD",
-        priceSpecification: {
-          "@type": "UnitPriceSpecification",
-          price: pricing.ratePerM3,
-          priceCurrency: "AUD",
-          unitText: "cubic metre",
-          minPrice: pricing.minCharge,
-        },
+        availability: "https://schema.org/InStock",
+        priceSpecification: { "@type": "PriceSpecification", minPrice: from, priceCurrency: "AUD" },
       },
     }),
   };

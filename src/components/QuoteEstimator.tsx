@@ -4,13 +4,13 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useSpring, useTransform } from "motion/react";
 import * as m from "motion/react-m";
-import { ArrowRight, BuildingOffice, HardHat, House, Phone } from "@phosphor-icons/react/ssr";
-import { LOAD_SIZES, PRICING, FULL_LOAD_M3, calculateQuote, formatPrice, SITE, type CategoryId, type LoadId } from "@/content/site";
+import { ArrowRight, BuildingOffice, HardHat, House, Leaf, Phone } from "@phosphor-icons/react/ssr";
+import { JOB_TYPES, FULL_LOAD_M3, quoteFor, volumesFor, formatPrice, formatQuote, SITE, type JobType, type VolumeId } from "@/content/site";
 import { track } from "@/lib/track";
 import { CallLink } from "./ContactLinks";
 import { useScrollToElement } from "./motion/SmoothScroll";
 
-const ICONS = { "residential-rubbish-removal": House, "commercial-rubbish-removal": BuildingOffice, "construction-rubbish-removal": HardHat } as const;
+const ICONS = { "residential-rubbish-removal": House, "green-waste-removal": Leaf, "commercial-rubbish-removal": BuildingOffice, "construction-rubbish-removal": HardHat } as const;
 
 /** Price that springs between values instead of snapping. */
 function SpringPrice({ value }: { value: number }) {
@@ -21,7 +21,7 @@ function SpringPrice({ value }: { value: number }) {
 }
 
 export const ESTIMATE_EVENT = "nrr:estimate";
-export type EstimateDetail = { service: CategoryId; size: LoadId };
+export type EstimateDetail = { service: JobType; size: VolumeId };
 
 /**
  * Instant price estimator. "Lock in" hands the selection to the quote form on the
@@ -29,25 +29,26 @@ export type EstimateDetail = { service: CategoryId; size: LoadId };
  */
 export function QuoteEstimator({
   defaultService = "residential-rubbish-removal",
-  defaultLoad = "quarter",
+  defaultLoad = "2",
   variant = "full",
   formOnPage = true,
 }: {
-  defaultService?: CategoryId;
-  /** Load size the estimator opens on. */
-  defaultLoad?: LoadId;
+  defaultService?: JobType;
+  /** Load size the estimator opens on (moves to the nearest priced size for the job type). */
+  defaultLoad?: VolumeId;
   variant?: "full" | "compact";
   formOnPage?: boolean;
 }) {
-  const [service, setService] = useState<CategoryId>(defaultService);
-  const [size, setSize] = useState<LoadId>(defaultLoad);
-  const quote = calculateQuote(service, size);
-  const fill = Math.min((quote.load.m3 / FULL_LOAD_M3) * 100, 100);
+  const [service, setService] = useState<JobType>(defaultService);
+  const [size, setSize] = useState<VolumeId>(() => quoteFor(defaultService, defaultLoad).volume.id);
+  const quote = quoteFor(service, size);
+  const volumes = volumesFor(service);
+  const fill = Math.min((quote.volume.m3 / FULL_LOAD_M3) * 100, 100);
   const compact = variant === "compact";
   const scrollTo = useScrollToElement();
 
   const lockIn = () => {
-    track("estimate_lock_in", { service, size, low: quote.low, high: quote.high });
+    track("estimate_lock_in", { service, size, low: quote.low, high: quote.high, price: formatQuote(quote) });
     if (formOnPage) {
       window.dispatchEvent(new CustomEvent<EstimateDetail>(ESTIMATE_EVENT, { detail: { service, size } }));
       scrollTo(document.getElementById("quote-form"));
@@ -66,8 +67,8 @@ export function QuoteEstimator({
       <div className="space-y-5 p-5 sm:p-6">
         <fieldset>
           <legend className="label">1. What kind of job?</legend>
-          <div className="grid grid-cols-3 gap-2">
-            {PRICING.map((p) => {
+          <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+            {JOB_TYPES.map((p) => {
               const Icon = ICONS[p.id];
               const active = p.id === service;
               return (
@@ -77,6 +78,8 @@ export function QuoteEstimator({
                   aria-pressed={active}
                   onClick={() => {
                     setService(p.id);
+                    // Keep roughly the same amount when switching job type (each type is priced for different sizes).
+                    setSize(quoteFor(p.id, size).volume.id);
                     track("estimate_change", { field: "service", value: p.id });
                   }}
                   className={`relative flex flex-col items-center gap-1.5 rounded-xl border px-2 py-3 text-[13px] font-medium transition-colors ${
@@ -94,8 +97,8 @@ export function QuoteEstimator({
 
         <fieldset>
           <legend className="label">2. Roughly how much?</legend>
-          <div className="grid grid-cols-5 gap-1.5">
-            {LOAD_SIZES.map((l) => {
+          <div className="grid grid-cols-3 gap-1.5">
+            {volumes.map((l) => {
               const active = l.id === size;
               return (
                 <button
@@ -111,13 +114,13 @@ export function QuoteEstimator({
                   }`}
                 >
                   <span className={`absolute inset-0 rounded-[7px] bg-ink-800 transition-opacity duration-300 ${active ? "opacity-100" : "opacity-0"}`} aria-hidden />
-                  <span className="relative">{l.label}</span>
+                  <span className="relative">{l.short}</span>
                 </button>
               );
             })}
           </div>
           <p className="mt-2 text-[13px] text-muted">
-            ≈ {quote.load.m3} m³ · {quote.load.hint}
+            {quote.volume.id === "single" ? quote.volume.hint : `${quote.volume.label} · ${quote.volume.hint}`}
           </p>
           <div className="mt-3" aria-hidden>
             <div className="flex justify-between text-[12px] text-muted">
@@ -137,12 +140,17 @@ export function QuoteEstimator({
 
         <div className="rounded-xl bg-paper p-5 text-center ring-1 ring-line" aria-live="polite">
           <p className="text-[13px] text-muted">Estimated price</p>
-          <p className="sr-only">{`${formatPrice(quote.low)} to ${formatPrice(quote.high)}`}</p>
+          <p className="sr-only">{quote.isRange ? `${formatPrice(quote.low)} to ${formatPrice(quote.high)}` : formatPrice(quote.low)}</p>
           <p className="mt-1 font-display text-[42px] leading-none tabular-nums text-ink-800" aria-hidden>
-            <SpringPrice value={quote.low} /> <span className="text-2xl text-muted">–</span> <SpringPrice value={quote.high} />
+            <SpringPrice value={quote.low} />
+            {quote.isRange && (
+              <>
+                {" "}<span className="text-2xl text-muted">–</span> <SpringPrice value={quote.high} />
+              </>
+            )}
           </p>
           <p className="mt-2 text-[13px] text-muted">
-            Includes labour, loading, sweep-up & disposal.{quote.minChargeApplied ? ` Minimum charge ${formatPrice(quote.service.minCharge)}.` : ""}
+            {quote.job.label} · {quote.volume.label}. Includes labour, loading, sweep-up & disposal.
           </p>
         </div>
 
@@ -153,7 +161,7 @@ export function QuoteEstimator({
         ) : (
           <Link
             href={`/contact?service=${service}&size=${size}#quote-form`}
-            onClick={() => track("estimate_lock_in", { service, size, low: quote.low, high: quote.high })}
+            onClick={() => track("estimate_lock_in", { service, size, low: quote.low, high: quote.high, price: formatQuote(quote) })}
             className="btn-primary w-full"
           >
             Lock in this price <ArrowRight className="h-4 w-4" aria-hidden />

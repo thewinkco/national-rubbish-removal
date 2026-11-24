@@ -1,6 +1,7 @@
 // Unique long-form content migrated verbatim from the indexed site.
 // Keeping it intact protects existing rankings while the page around it is rebuilt.
 import data from "@/content/legacy.json";
+import { formatPrice, quoteFor } from "@/content/site";
 
 export type Block =
   | { type: "p"; text: string }
@@ -18,7 +19,29 @@ export type LegacyPage = {
   sections: LegacySection[];
 };
 
-const pages = data as unknown as Record<string, LegacyPage>;
+// Prices in the copy are written as {{price.*}} placeholders and filled from the price list in site.ts,
+// so a price change never leaves an old number behind on a suburb or service page.
+const PRICE_TOKENS: Record<string, string> = {
+  "price.household": formatPrice(quoteFor("residential-rubbish-removal", "single").low),
+  "price.full": formatPrice(quoteFor("residential-rubbish-removal", "8").low),
+  "price.green": formatPrice(quoteFor("green-waste-removal", "1").low),
+  "price.builder": formatPrice(quoteFor("construction-rubbish-removal", "2").low),
+  "price.commercial": formatPrice(quoteFor("commercial-rubbish-removal", "2").low),
+};
+
+function fillPrices<T>(x: T): T {
+  if (typeof x === "string") {
+    return x.replace(/\{\{(price\.[a-z]+)\}\}/g, (m, key: string) => {
+      if (!PRICE_TOKENS[key]) throw new Error(`Unknown price placeholder ${m} in legacy.json`);
+      return PRICE_TOKENS[key];
+    }) as T;
+  }
+  if (Array.isArray(x)) return x.map(fillPrices) as T;
+  if (x && typeof x === "object") return Object.fromEntries(Object.entries(x).map(([k, v]) => [k, fillPrices(v)])) as T;
+  return x;
+}
+
+const pages = fillPrices(data as unknown as Record<string, LegacyPage>);
 
 export function getLegacy(slug: string): LegacyPage | undefined {
   return pages[slug];

@@ -1,4 +1,4 @@
-import type { CategoryId, LoadId } from "./site";
+import type { CategoryId, JobType, VolumeId } from "./site";
 import type { Faq } from "./faqs";
 
 export type Category = {
@@ -64,8 +64,10 @@ export type Service = {
   imageAlt?: string;
   /** Short line shown under the "Sound familiar?" photo. */
   imageCaption?: string;
-  /** Load size the hero estimator opens on (default ¼ truck). Single-item services open on "single-item". */
-  defaultLoad?: LoadId;
+  /** Load size the hero estimator opens on (default 2 m³). Single-item services open on "single". */
+  defaultLoad?: VolumeId;
+  /** Job type the estimator and quote form open on, when it isn't the category's default (e.g. green waste). */
+  defaultJob?: JobType;
   /** Service-specific FAQs, shown (and marked up) before a couple of the general ones. */
   faqs?: Faq[];
 };
@@ -94,6 +96,7 @@ export const SERVICES: Service[] = [
   },
   {
     slug: "green-waste-removal",
+    defaultJob: "green-waste-removal",
     imageCaption: "Branches, fronds and clippings loaded for you",
     image: "/images/residential/green-waste-removal-sydney.webp",
     imageAlt: "NRR crew loading branches and garden clippings onto the truck for green waste removal in Sydney",
@@ -191,7 +194,7 @@ export const SERVICES: Service[] = [
       "Left outside, it gets wet, heavy and harder to recycle.",
     ],
     takes: ["Single to king mattresses", "Bed bases & ensembles", "Bed frames & headboards", "Cots & bunk beds", "Mattress toppers", "The rest of the bedroom, too"],
-    defaultLoad: "single-item",
+    defaultLoad: "single",
     faqs: [
       {
         q: "How much does mattress removal cost?",

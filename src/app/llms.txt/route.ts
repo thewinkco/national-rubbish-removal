@@ -2,7 +2,7 @@ import { CATEGORIES, servicesIn } from "@/content/services";
 import { REGION_ORDER, SUBURBS } from "@/content/suburbs";
 import { GENERAL_FAQS } from "@/content/faqs";
 import { POSTS } from "@/content/blog";
-import { EXCLUDED_ITEMS, GOOGLE_RATING, LOAD_SIZES, PRICING, SITE, calculateQuote, formatPrice } from "@/content/site";
+import { EXCLUDED_ITEMS, FULL_LOAD_M3, GOOGLE_RATING, JOB_TYPES, PRICE_GUIDE, SITE, formatQuote, quoteFor, volumesFor } from "@/content/site";
 
 // /llms.txt (https://llmstxt.org): a plain Markdown summary of the business for AI assistants and answer engines.
 // Generated from the same content files as the pages, so it never drifts from the site. Prerendered at build time.
@@ -35,16 +35,17 @@ function build() {
     "",
     "## Pricing guide",
     "",
-    "Priced by the space the rubbish takes up in the truck (a full truck is about 10 cubic metres). Ranges below are estimates; an exact price is given from photos or on site.",
+    `Fixed prices by the space the rubbish takes up in the truck (a full truck is ${FULL_LOAD_M3} cubic metres). The price covers labour, loading, sweep-up and disposal, and is confirmed from photos or on site before work starts.`,
     "",
   );
-  for (const p of PRICING) {
-    const ranges = LOAD_SIZES.map((l) => {
-      const q = calculateQuote(p.id, l.id);
-      return `${l.label} ${formatPrice(q.low)}–${formatPrice(q.high)}`;
-    }).join(", ");
-    push(`- ${p.label} (${p.blurb.toLowerCase()}): ${ranges}. Minimum charge ${formatPrice(p.minCharge)}; hourly rate ${formatPrice(p.hourly)}.`);
+  for (const j of JOB_TYPES) {
+    const prices = volumesFor(j.id)
+      .map((v) => `${v.id === "single" ? "minimum pickup (up to 1 m³)" : v.label} ${formatQuote(quoteFor(j.id, v.id))}`)
+      .join(", ");
+    push(`- ${j.label} (${j.blurb.toLowerCase()}): ${prices}.`);
   }
+  push("", "Guide prices for bigger jobs (confirmed from photos or a site visit):", "");
+  for (const g of PRICE_GUIDE) push(`- ${g.title}: ${g.items.map((i) => `${i.label.toLowerCase()} ${i.price}`).join("; ")}.`);
   push("", `Not accepted: ${EXCLUDED_ITEMS.join("; ").toLowerCase()}.`, "");
 
   push(

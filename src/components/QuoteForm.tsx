@@ -5,7 +5,10 @@ import { useEffect, useRef, useState, type FormEvent } from "react";
 import { usePathname } from "next/navigation";
 import * as m from "motion/react-m";
 import { ArrowLeft, ArrowRight, Calculator, CheckCircle, Camera, CircleNotch, Lock, X } from "@phosphor-icons/react/ssr";
-import { LOAD_SIZES, PRICING, SITE, calculateQuote, formatPrice, type CategoryId, type LoadId } from "@/content/site";
+import { JOB_TYPES, VOLUMES, SITE, quoteFor, formatQuote, type JobType, type VolumeId } from "@/content/site";
+
+// The form asks for a rough amount; the price uses the nearest size priced for the chosen job type.
+const FORM_VOLUMES = VOLUMES.filter((v) => ["single", "1", "2", "4", "6", "8"].includes(v.id));
 import { track } from "@/lib/track";
 import { ESTIMATE_EVENT, type EstimateDetail } from "./QuoteEstimator";
 import { CallLink } from "./ContactLinks";
@@ -33,11 +36,11 @@ async function uploadToCloudinary(file: File): Promise<Photo> {
  * step 2 asks for contact details. Payload keys match the existing Google Apps Script
  * so leads land in the same sheet as before.
  */
-export function QuoteForm({ defaultService, heading = "Get your fixed price", context }: { defaultService?: CategoryId; heading?: string; context?: string }) {
+export function QuoteForm({ defaultService, heading = "Get your fixed price", context }: { defaultService?: JobType; heading?: string; context?: string }) {
   const pathname = usePathname();
   const [step, setStep] = useState<1 | 2>(1);
-  const [services, setServices] = useState<CategoryId[]>(defaultService ? [defaultService] : []);
-  const [size, setSize] = useState<LoadId | "">("");
+  const [services, setServices] = useState<JobType[]>(defaultService ? [defaultService] : []);
+  const [size, setSize] = useState<VolumeId | "">("");
   const [photos, setPhotos] = useState<Photo[]>([]);
   const [uploading, setUploading] = useState(false);
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
@@ -50,10 +53,10 @@ export function QuoteForm({ defaultService, heading = "Get your fixed price", co
   useEffect(() => {
     setToday(sydneyToday());
     const params = new URLSearchParams(window.location.search);
-    const qService = params.get("service") as CategoryId | null;
-    const qSize = params.get("size") as LoadId | null;
-    if (qService && PRICING.some((p) => p.id === qService)) setServices([qService]);
-    if (qSize && LOAD_SIZES.some((l) => l.id === qSize)) setSize(qSize);
+    const qService = params.get("service") as JobType | null;
+    const qSize = params.get("size") as VolumeId | null;
+    if (qService && JOB_TYPES.some((p) => p.id === qService)) setServices([qService]);
+    if (qSize && VOLUMES.some((l) => l.id === qSize)) setSize(qSize);
 
     const onEstimate = (e: Event) => {
       const { service, size } = (e as CustomEvent<EstimateDetail>).detail;
@@ -71,10 +74,10 @@ export function QuoteForm({ defaultService, heading = "Get your fixed price", co
     track("quote_form_start", { page: pathname });
   };
 
-  const estimate = services[0] && size ? calculateQuote(services[0], size) : null;
+  const estimate = services[0] && size ? quoteFor(services[0], size) : null;
 
   // Single choice: picking a job type replaces the previous one (the estimate prices one type).
-  const selectService = (id: CategoryId) => {
+  const selectService = (id: JobType) => {
     markStarted();
     setServices([id]);
     setErrors((e) => ({ ...e, services: "" }));
@@ -128,13 +131,13 @@ export function QuoteForm({ defaultService, heading = "Get your fixed price", co
     if (Object.keys(errs).length) return;
 
     setStatus("loading");
-    const sizeLabel = LOAD_SIZES.find((l) => l.id === size)?.label ?? "";
+    const sizeLabel = VOLUMES.find((l) => l.id === size)?.label ?? "";
     const payload = {
       ...data,
-      services: services.map((id) => ({ id, label: PRICING.find((p) => p.id === id)?.label ?? id })),
+      services: services.map((id) => ({ id, label: JOB_TYPES.find((p) => p.id === id)?.label ?? id })),
       size: sizeLabel,
       photos,
-      estimate: estimate ? `${formatPrice(estimate.low)} – ${formatPrice(estimate.high)}` : "",
+      estimate: estimate ? formatQuote(estimate) : "",
       page: pathname,
       context: context ?? "",
     };
@@ -228,8 +231,8 @@ export function QuoteForm({ defaultService, heading = "Get your fixed price", co
         <m.div className={step === 1 ? "space-y-6" : "hidden"} initial={false} animate={step === 1 ? { opacity: 1, x: 0 } : { opacity: 0, x: -24 }}>
           <fieldset>
             <legend className="label">What needs to go? <span className="font-normal text-muted">(pick one)</span></legend>
-            <div role="radiogroup" aria-label="Type of job" className="grid gap-2 sm:grid-cols-3">
-              {PRICING.map((p) => {
+            <div role="radiogroup" aria-label="Type of job" className="grid grid-cols-2 gap-2">
+              {JOB_TYPES.map((p) => {
                 const active = services[0] === p.id;
                 return (
                   <button
@@ -251,8 +254,8 @@ export function QuoteForm({ defaultService, heading = "Get your fixed price", co
 
           <fieldset>
             <legend className="label">How much is there? <span className="font-normal text-muted">(best guess is fine)</span></legend>
-            <div className="grid grid-cols-2 gap-2 sm:grid-cols-5">
-              {LOAD_SIZES.map((l) => {
+            <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+              {FORM_VOLUMES.map((l) => {
                 const active = size === l.id;
                 return (
                   <button
@@ -262,7 +265,7 @@ export function QuoteForm({ defaultService, heading = "Get your fixed price", co
                     onClick={() => { markStarted(); setSize(active ? "" : l.id); }}
                     className={`rounded-xl border px-2 py-2.5 text-left transition ${active ? "border-brand bg-brand text-on-brand" : "border-line hover:border-ink-600/30"}`}
                   >
-                    <span className="block text-[14px] font-bold">{l.label}</span>
+                    <span className="block text-[14px] font-bold">{l.short}</span>
                     <span className={`block text-[12.5px] leading-snug sm:text-[12px] ${active ? "text-on-brand/75" : "text-muted"}`}>{l.hint}</span>
                   </button>
                 );
@@ -275,7 +278,7 @@ export function QuoteForm({ defaultService, heading = "Get your fixed price", co
               <div className="flex min-h-[76px] items-center justify-between gap-4 rounded-2xl bg-ink-800 px-5 py-4 text-white">
                 <div>
                   <p className="text-xs font-semibold uppercase tracking-wider text-white/60">Your estimate</p>
-                  <p className="font-display text-2xl">{formatPrice(estimate.low)} – {formatPrice(estimate.high)}</p>
+                  <p className="font-display text-2xl">{formatQuote(estimate)}</p>
                 </div>
                 <p className="max-w-[12rem] text-right text-[12px] text-white/70">Confirmed as a fixed price before we lift anything.</p>
               </div>

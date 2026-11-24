@@ -58,47 +58,130 @@ export type CategoryId =
   | "commercial-rubbish-removal"
   | "construction-rubbish-removal";
 
-// Volume pricing used by the live quote estimator (rate per m³ + minimum charge).
-export const PRICING: {
-  id: CategoryId;
-  label: string;
-  blurb: string;
-  ratePerM3: number;
-  minCharge: number;
-  hourly: number;
-}[] = [
-  { id: "residential-rubbish-removal", label: "Residential", blurb: "Household junk, furniture, garden waste & cleanouts", ratePerM3: 80, minCharge: 150, hourly: 90 },
-  { id: "commercial-rubbish-removal", label: "Commercial", blurb: "Office clearances, shop strip-outs & business waste", ratePerM3: 95, minCharge: 200, hourly: 120 },
-  { id: "construction-rubbish-removal", label: "Construction", blurb: "Renovation debris, building materials & heavy waste", ratePerM3: 130, minCharge: 250, hourly: 150 },
+// ── Pricing (owner price list, Nov 2026) ─────────────────────────────────────────────
+// Fixed prices by volume for the instant estimator, plus guide ranges for bigger jobs.
+// Prices are shown as listed (no GST label). Change prices here only: every page, the blog and llms.txt read them.
+
+/** Job types in the estimator and quote form. Green waste is its own type; it belongs to the residential category. */
+export type JobType = CategoryId | "green-waste-removal";
+
+export type VolumeId = "single" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8";
+
+/** A full truck is 8 m³. */
+export const FULL_LOAD_M3 = 8;
+
+export const VOLUMES: { id: VolumeId; label: string; short: string; m3: number; hint: string }[] = [
+  { id: "single", label: "Minimum pickup", short: "Single item", m3: 0.5, hint: "One mattress, fridge or couch (up to 1 m³)" },
+  { id: "1", label: "1 m³", short: "1 m³", m3: 1, hint: "A few furniture items & bags" },
+  { id: "2", label: "2 m³ · ¼ truck", short: "¼ truck", m3: 2, hint: "A small room or a trailer load" },
+  { id: "3", label: "3 m³ · ⅜ truck", short: "⅜ truck", m3: 3, hint: "A spare room or small shed" },
+  { id: "4", label: "4 m³ · ½ truck", short: "½ truck", m3: 4, hint: "Studio declutter or garden cleanup" },
+  { id: "5", label: "5 m³ · ⅝ truck", short: "⅝ truck", m3: 5, hint: "A packed single garage" },
+  { id: "6", label: "6 m³ · ¾ truck", short: "¾ truck", m3: 6, hint: "Garage or shed cleanout" },
+  { id: "7", label: "7 m³ · ⅞ truck", short: "⅞ truck", m3: 7, hint: "Most of a house" },
+  { id: "8", label: "8 m³ · full truck", short: "Full truck", m3: 8, hint: "Whole-home or big reno cleanup" },
 ];
 
-export const FULL_LOAD_M3 = 10;
+/** Price per volume: [price] for a fixed price, [low, high] for a range. */
+type Tiers = Partial<Record<VolumeId, [number] | [number, number]>>;
 
-export const LOAD_SIZES = [
-  { id: "single-item", label: "Single Item", m3: 1, hint: "A mattress, fridge or couch" },
-  { id: "quarter", label: "¼ Truck", m3: 2.5, hint: "A few furniture items & bags" },
-  { id: "half", label: "½ Truck", m3: 5, hint: "Studio declutter or garden cleanup" },
-  { id: "three-qtr", label: "¾ Truck", m3: 7.5, hint: "Garage or shed cleanout" },
-  { id: "full", label: "Full Truck", m3: 10, hint: "Whole-home or big reno cleanup" },
-] as const;
+export const JOB_TYPES: { id: JobType; label: string; blurb: string; category: CategoryId; tiers: Tiers }[] = [
+  {
+    id: "residential-rubbish-removal",
+    label: "Household",
+    blurb: "Furniture, junk, clutter & clean-outs",
+    category: "residential-rubbish-removal",
+    tiers: { single: [180], 1: [220], 2: [360], 3: [520], 4: [690], 5: [840], 6: [980], 7: [1120], 8: [1250] },
+  },
+  {
+    id: "green-waste-removal",
+    label: "Green waste",
+    blurb: "Clean branches, clippings & garden waste",
+    category: "residential-rubbish-removal",
+    tiers: { 1: [150], 2: [250], 4: [450], 6: [650], 8: [850] },
+  },
+  {
+    id: "construction-rubbish-removal",
+    label: "Builder waste",
+    blurb: "Mixed light renovation & building waste",
+    category: "construction-rubbish-removal",
+    tiers: { 2: [450], 4: [800], 6: [1050], 8: [1350] },
+  },
+  {
+    id: "commercial-rubbish-removal",
+    label: "Commercial",
+    blurb: "Factory, warehouse & business waste",
+    category: "commercial-rubbish-removal",
+    tiers: { 2: [450, 550], 4: [800, 950], 8: [1400, 1600] },
+  },
+];
 
-export type LoadId = (typeof LOAD_SIZES)[number]["id"];
+export const getJobType = (id: JobType) => JOB_TYPES.find((j) => j.id === id) ?? JOB_TYPES[0];
 
-const roundTo = (n: number, step = 10) => Math.round(n / step) * step;
+/** Volumes a job type is priced for, smallest first. */
+export const volumesFor = (id: JobType) => VOLUMES.filter((v) => getJobType(id).tiers[v.id]);
 
-export function calculateQuote(serviceId: CategoryId, loadId: LoadId) {
-  const service = PRICING.find((p) => p.id === serviceId) ?? PRICING[0];
-  const load = LOAD_SIZES.find((l) => l.id === loadId) ?? LOAD_SIZES[0];
-  const raw = load.m3 * service.ratePerM3;
-  const base = Math.max(raw, service.minCharge);
-  return {
-    low: roundTo(base),
-    high: roundTo(base * 1.15),
-    minChargeApplied: raw < service.minCharge,
-    service,
-    load,
-  };
+/**
+ * Price for a job type and volume. If that exact volume isn't on the list for this job type,
+ * the next size up is used (or the largest), so every combination has a price.
+ */
+export function quoteFor(jobId: JobType, volumeId: VolumeId) {
+  const job = getJobType(jobId);
+  const wanted = VOLUMES.find((v) => v.id === volumeId) ?? VOLUMES[0];
+  const priced = volumesFor(job.id);
+  const volume = priced.find((v) => v.id === wanted.id) ?? priced.find((v) => v.m3 >= wanted.m3) ?? priced[priced.length - 1];
+  const [low, high = low] = job.tiers[volume.id]!;
+  return { low, high, isRange: high > low, job, volume, adjusted: volume.id !== wanted.id };
 }
+
+/** "$360" or "$450–$550". */
+export const formatQuote = (q: { low: number; high: number }) => (q.high > q.low ? `${formatPrice(q.low)}–${formatPrice(q.high)}` : formatPrice(q.low));
+
+/** Starting price for a site category: the smallest load of its main job type (household, builder waste, commercial). */
+export function fromPrice(category: CategoryId) {
+  return Math.min(...Object.values(getJobType(category).tiers).map((t) => t![0]));
+}
+
+/** Guide ranges for bigger jobs, confirmed after photos or a site visit. */
+export const PRICE_GUIDE: { title: string; note?: string; items: { label: string; price: string }[] }[] = [
+  {
+    title: "Deceased estate clearances",
+    items: [
+      { label: "Single room", price: "$550–$850" },
+      { label: "1 bedroom home", price: "$1,200–$1,800" },
+      { label: "2 bedroom home", price: "$1,600–$2,500" },
+      { label: "3 bedroom home", price: "$2,400–$3,800" },
+      { label: "4 bedroom home", price: "$3,200–$5,000" },
+      { label: "5+ bedroom home", price: "$4,500–$7,500" },
+    ],
+  },
+  {
+    title: "Factory & warehouse clear-outs",
+    items: [
+      { label: "2 m³ load", price: "$450–$550" },
+      { label: "4 m³ load", price: "$800–$950" },
+      { label: "8 m³ load", price: "$1,400–$1,600" },
+      { label: "Small factory or workshop", price: "$1,500–$3,000" },
+      { label: "Medium factory or warehouse", price: "$3,000–$6,000" },
+    ],
+  },
+  {
+    title: "Strip-outs",
+    items: [
+      { label: "Minimum strip-out (mobilisation)", price: "From $850" },
+      { label: "Standard bathroom strip-out", price: "$2,500–$3,800" },
+      { label: "Standard kitchen strip-out", price: "$2,200–$3,800" },
+      { label: "Single-room soft strip-out", price: "$2,000–$4,500" },
+    ],
+  },
+  {
+    title: "Office & retail",
+    items: [
+      { label: "Light office defit", price: "$45–$65 per m²" },
+      { label: "Retail strip-out", price: "$55–$90 per m²" },
+    ],
+  },
+];
 
 export const formatPrice = (n: number) => `$${n.toLocaleString("en-AU")}`;
 

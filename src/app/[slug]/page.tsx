@@ -107,7 +107,7 @@ function ServicePage({ service }: { service: Service }) {
         breadcrumbs={crumbs}
         image={service.image ?? category.image}
         imageAlt={service.imageAlt ?? category.imageAlt}
-        defaultService={service.category}
+        defaultService={service.defaultJob ?? service.category}
         defaultLoad={service.defaultLoad}
       />
 
@@ -175,7 +175,7 @@ function ServicePage({ service }: { service: Service }) {
       <CtaBand title={`Ready for ${service.name.toLowerCase()}? It could be gone today.`} body="Book before 1pm for same day pickup. Price locked before we lift a thing." />
       <AreasGrid title={`${service.name} across Sydney`} />
       <FaqList faqs={faqs} title={service.faqs ? `${service.name}: your questions answered` : undefined} />
-      <QuoteSection defaultService={service.category} context={service.name} title={`Get your ${service.name.toLowerCase()} price`} />
+      <QuoteSection defaultService={service.defaultJob ?? service.category} context={service.name} title={`Get your ${service.name.toLowerCase()} price`} />
     </>
   );
 }

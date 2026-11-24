@@ -1,19 +1,16 @@
-import { LOAD_SIZES, PRICING, SITE, calculateQuote, formatPrice } from "@/content/site";
+import { SITE, formatQuote, quoteFor, volumesFor, type VolumeId } from "@/content/site";
 import type { BlogPost } from "../types";
 
 const slug = "green-waste-removal-sydney";
 const img = (name: string) => `/images/blog/${slug}/${name}`;
-const [res] = PRICING;
-const range = (load: (typeof LOAD_SIZES)[number]["id"]) => {
-  const q = calculateQuote(res.id, load);
-  return `${formatPrice(q.low)} to ${formatPrice(q.high)}`;
-};
+// Clean green waste prices from the price list in src/content/site.ts.
+const price = (vol: VolumeId) => formatQuote(quoteFor("green-waste-removal", vol));
 
 export const post: BlogPost = {
   slug,
   title: "How to Get Rid of Green Waste in Sydney: Options and Costs",
   h1: "How to Get Rid of Green Waste in Sydney, Fast",
-  description: `Branches, palm fronds and clippings piling up? Compare your green bin, council pick-up and a removalist in Sydney, with limits and prices from ${formatPrice(res.minCharge)}.`,
+  description: `Branches, palm fronds and clippings piling up? Compare your green bin, council pick-up and a removalist in Sydney, with limits and prices from ${price("1")}.`,
   excerpt: "Your green bin takes the small stuff. Here is what to do with palm fronds, big branches and a whole backyard of clippings, and what each option costs.",
   category: "How-To Guides",
   primaryKeyword: "how to get rid of green waste sydney",
@@ -28,11 +25,11 @@ export const post: BlogPost = {
     height: 810,
   },
   ogImage: img(`${slug}-og.jpg`),
-  answer: `The fastest way to clear a big pile of green waste in Sydney is a rubbish removal crew. A half truck of branches, fronds and clippings costs about ${range("half")}, loaded and swept up. Council green bins and bulky pick-ups cost less but take longer, and their size limits vary by council.`,
+  answer: `The fastest way to clear a big pile of green waste in Sydney is a rubbish removal crew. A half truck (4 m³) of clean branches, fronds and clippings costs ${price("4")}, loaded and swept up. Council green bins and bulky pick-ups cost less but take longer, and their size limits vary by council.`,
   takeaways: [
     "Your green bin only takes small branches and clippings. Palm fronds, thick branches and stumps are usually refused.",
     "Council limits differ: Ryde takes branches up to 8 cm thick and 90 cm long, City of Sydney up to 10 cm thick and 1 m long.",
-    `A half truck of garden waste is about ${range("half")} with us. The minimum charge is ${formatPrice(res.minCharge)}.`,
+    `Clean green waste starts at ${price("1")} for up to 1 m³, and half a truck (4 m³) is ${price("4")}.`,
     "Check with your council before removing a tree. Some trees need approval, and fines can be big.",
     "Tell the crew about weeds, soil and treated timber when you book. They change what can go in the load.",
   ],
@@ -40,7 +37,7 @@ export const post: BlogPost = {
     { type: "h2", text: "What is the fastest way to get rid of green waste in Sydney?" },
     {
       type: "p",
-      text: `Book a rubbish removal crew. You point at the pile, agree a fixed price, and the crew lifts, loads and sweeps up, often the same day if you book before 1pm. Our [green waste removal](/green-waste-removal) service handles branches, palm fronds, hedge clippings, leaves and old pot plants in one visit. Garden jobs like this usually fill about half a truck, which is ${range("half")}.`,
+      text: `Book a rubbish removal crew. You point at the pile, agree a fixed price, and the crew lifts, loads and sweeps up, often the same day if you book before 1pm. Our [green waste removal](/green-waste-removal) service handles branches, palm fronds, hedge clippings, leaves and old pot plants in one visit. Garden jobs like this usually fill about half a truck (4 m³), which is ${price("4")} for clean green waste.`,
     },
     {
       type: "p",
@@ -89,17 +86,17 @@ export const post: BlogPost = {
     { type: "h2", text: "How much does green waste removal cost in Sydney?" },
     {
       type: "p",
-      text: `Household green waste is priced by the space it takes in the truck, from ${formatPrice(res.minCharge)} for a very small load up to ${range("full")} for a full 10 m³ truck. The price includes the two-person crew, loading, transport, tip fees and sweep-up. You agree the number before anyone lifts a branch.`,
+      text: `Clean green waste is priced by the space it takes in the truck, from ${price("1")} for up to 1 m³ to ${price("8")} for a full 8 m³ truck. "Clean" means branches, clippings, leaves and fronds with no soil, rubbish or timber mixed in; mixed loads are priced as household rubbish. The price includes the two-person crew, loading, transport, tip fees and sweep-up, and you agree it before anyone lifts a branch.`,
     },
     {
       type: "table",
-      caption: "Residential green waste removal prices, Sydney metro (fixed price, tip fees included)",
+      caption: "Clean green waste removal prices, Sydney metro (fixed price, tip fees included)",
       head: ["Load", "Looks like", "Price"],
-      rows: LOAD_SIZES.map((l) => [l.label, l.hint, range(l.id)]),
+      rows: volumesFor("green-waste-removal").map((v) => [v.id === "1" ? "Up to 1 m³" : v.label, v.hint, price(v.id)]),
     },
     {
       type: "p",
-      text: `A sunny Saturday hedge trim and a few palm fronds is usually a quarter truck. A full backyard cut-back after a storm is usually half to three-quarters. If you have more than that, we can price by the hour at ${formatPrice(res.hourly)}. For other items in the same pickup, see our [price estimator](/quote-estimator) or the full [rubbish removal cost guide](/blog/rubbish-removal-cost-sydney).`,
+      text: `A sunny Saturday hedge trim and a few palm fronds is usually a quarter truck. A full backyard cut-back after a storm is usually half to three-quarters. If you have more than a full truck, we price the whole job from photos. For other items in the same pickup, see our [price estimator](/quote-estimator) or the full [rubbish removal cost guide](/blog/rubbish-removal-cost-sydney).`,
     },
     {
       type: "image",
@@ -150,7 +147,7 @@ export const post: BlogPost = {
     },
     {
       q: "How much is a green waste pickup in Sydney?",
-      a: `Prices start at ${formatPrice(res.minCharge)}. A quarter truck of garden waste is about ${range("quarter")}, and a half truck is about ${range("half")}. The price is fixed before work starts.`,
+      a: `Clean green waste starts at ${price("1")} for up to 1 m³. A quarter truck (2 m³) is ${price("2")} and a half truck (4 m³) is ${price("4")}. The price is fixed before work starts.`,
     },
     {
       q: "Do you take tree stumps and logs?",

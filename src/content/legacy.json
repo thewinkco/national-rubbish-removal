@@ -116,7 +116,7 @@
     "blocks": [
      {
       "type": "p",
-      "text": "Household rubbish removal is $90 per hour, with a $250 minimum per job. Shops and cafes on Bondi Road pay our commercial rate of $120 per hour. Your quote covers the lifting, the loading, the sweep up and the tip fees."
+      "text": "Household rubbish removal starts at {{price.household}} for a minimum pickup, and a full 8 m³ truck is {{price.full}}. Shops and cafes on Bondi Road pay our commercial load prices, from {{price.commercial}} for 2 m³. Your quote covers the lifting, the loading, the sweep up and the tip fees."
      },
      {
       "type": "p",
@@ -145,7 +145,7 @@
      {
       "type": "qa",
       "q": "Do you also work in Bondi Beach, North Bondi and Bondi Junction?",
-      "a": "Yes. We cover all of Waverley, including Tamarama, Bronte and Waverley itself. You get the same hourly rates and the same day pickups when you book early. Just tell us your street when you [request a quote](/contact), and we will plan parking and access before we arrive."
+      "a": "Yes. We cover all of Waverley, including Tamarama, Bronte and Waverley itself. You get the same fixed prices and the same day pickups when you book early. Just tell us your street when you [request a quote](/contact), and we will plan parking and access before we arrive."
      },
      {
       "type": "p",
@@ -255,7 +255,7 @@
     "blocks": [
      {
       "type": "p",
-      "text": "We have three simple hourly rates. Homes are $90 per hour, businesses are $120 per hour, and building and renovation waste is $150 per hour. There is a $250 minimum for every job, and every quote already covers the crew, the truck, the sweep up and the tip."
+      "text": "Our prices are fixed by load size. Household rubbish starts at {{price.household}}, clean green waste at {{price.green}}, and building and renovation waste at {{price.builder}} for 2 m³. Every quote already covers the crew, the truck, the sweep up and the tip."
      },
      {
       "type": "p",
@@ -274,7 +274,7 @@
      {
       "type": "qa",
       "q": "What is the minimum charge for junk removal?",
-      "a": "Our minimum charge is $250 per job. That covers the crew, the truck, the loading and the disposal fees, so you are not hit with extra costs later."
+      "a": "Our minimum pickup is {{price.household}} for up to 1 m³ of household rubbish. That covers the crew, the truck, the loading and the disposal fees, so you are not hit with extra costs later."
      },
      {
       "type": "qa",
@@ -284,7 +284,7 @@
      {
       "type": "qa",
       "q": "Do you also cover Pagewood, Hillsdale, Eastlakes and Mascot?",
-      "a": "Yes. We work right across the Bayside area at the same hourly rates. Just give us your address when you [book your rubbish removal](/contact), and we will lock in a time that suits you."
+      "a": "Yes. We work right across the Bayside area at the same fixed prices. Just give us your address when you [book your rubbish removal](/contact), and we will lock in a time that suits you."
      },
      {
       "type": "p",
@@ -464,7 +464,7 @@
     "blocks": [
      {
       "type": "p",
-      "text": "We keep our pricing affordable and easy to understand. Residential jobs are $90 per hour, with a minimum charge of $250. Your price includes labour, loading, cleanup and disposal fees, so there are no hidden costs."
+      "text": "We keep our pricing affordable and easy to understand. Residential jobs start at {{price.household}} for a minimum pickup. Your price includes labour, loading, cleanup and disposal fees, so there are no hidden costs."
      },
      {
       "type": "p",
@@ -534,7 +534,7 @@
      {
       "type": "qa",
       "q": "What is the cheapest way to get rid of a lot of junk in Brighton Le Sands?",
-      "a": "Book one pickup for everything at once. You pay only for the time we spend, from a $250 minimum, and that already covers loading and tip fees. No trailer hire, no trips to the tip and no waiting for a council date."
+      "a": "Book one pickup for everything at once. You pay one fixed price for the space it takes in the truck, from {{price.household}}, and that already covers loading and tip fees. No trailer hire, no trips to the tip and no waiting for a council date."
      },
      {
       "type": "qa",
@@ -758,7 +758,7 @@
     "blocks": [
      {
       "type": "p",
-      "text": "Apartment and house jobs are $90 per hour. Offices, shops and other businesses pay $120 per hour. Every job has a $250 minimum, and your quote already includes the crew, the loading, the sweep up and the disposal fees."
+      "text": "Apartment and house jobs start at {{price.household}}. Offices, shops and other businesses pay our commercial load prices, from {{price.commercial}} for 2 m³. Your quote already includes the crew, the loading, the sweep up and the disposal fees."
      },
      {
       "type": "p",
@@ -787,7 +787,7 @@
      {
       "type": "qa",
       "q": "Do you offer hard rubbish collection in Chatswood for more than the 2 cubic metre council limit?",
-      "a": "Yes. Willoughby Council caps each clean up at 2 cubic metres, but our hard rubbish collection has no volume limit. Whether it is one room or a whole apartment, we clear it in a single visit and you only pay for the time we spend."
+      "a": "Yes. Willoughby Council caps each clean up at 2 cubic metres, but our hard rubbish collection has no volume limit. Whether it is one room or a whole apartment, we clear it in a single visit for one fixed price."
      },
      {
       "type": "p",
@@ -969,7 +969,7 @@
     "blocks": [
      {
       "type": "p",
-      "text": "Homes pay $90 an hour and cafes, shops and other businesses pay $120 an hour. A $250 minimum applies to each booking, and there are no extra charges for the crew, the loading, the tidy up or the tip."
+      "text": "Homes start at {{price.household}}, and cafes, shops and other businesses start at {{price.commercial}} for 2 m³. There are no extra charges for the crew, the loading, the tidy up or the tip."
      },
      {
       "type": "p",
@@ -1099,7 +1099,7 @@
     "blocks": [
      {
       "type": "p",
-      "text": "Pricing is based on time and the type of job. Home rubbish removal is $90 per hour, and commercial jobs for shops and cafes are $120 per hour. There is a $250 minimum charge per job. Labour, loading, cleanup and disposal are all included."
+      "text": "Pricing is based on time and the type of job. Home rubbish removal starts at {{price.household}}, and commercial jobs for shops and cafes start at {{price.commercial}} for 2 m³. A full 8 m³ truck of household rubbish is {{price.full}}. Labour, loading, cleanup and disposal are all included."
      },
      {
       "type": "p",
@@ -1460,7 +1460,7 @@
     "blocks": [
      {
       "type": "p",
-      "text": "Home and apartment jobs are $90 per hour. Renovation and building waste is $150 per hour, and every booking has a $250 minimum. The price covers the crew, the carrying, the loading, the sweep up and the tip fees, so there are no surprises at the end."
+      "text": "Home and apartment jobs start at {{price.household}}. Renovation and building waste starts at {{price.builder}} for 2 m³. The price covers the crew, the carrying, the loading, the sweep up and the tip fees, so there are no surprises at the end."
      },
      {
       "type": "p",
@@ -1652,7 +1652,7 @@
     "blocks": [
      {
       "type": "p",
-      "text": "We charge for the time the job takes. Residential rubbish removal is $90 per hour, with a $250 minimum for every job. Loading, labour, cleanup and disposal fees are included. A single unit is usually quick. A full house takes longer, so we always give you a clear quote first."
+      "text": "We charge a fixed price for the space your rubbish takes in the truck. Residential rubbish removal starts at {{price.household}} for a minimum pickup, and a full 8 m³ truck is {{price.full}}. Loading, labour, cleanup and disposal fees are included. A single unit is usually quick. A full house takes longer, so we always give you a clear quote first."
      },
      {
       "type": "p",
@@ -1807,7 +1807,7 @@
     "blocks": [
      {
       "type": "p",
-      "text": "We charge $90 per hour for residential jobs, and there is a minimum charge of $250 per job. That covers labour, loading, cleanup and disposal fees. Nothing is added later."
+      "text": "Residential jobs start at {{price.household}} for a minimum pickup, up to {{price.full}} for a full 8 m³ truck. That covers labour, loading, cleanup and disposal fees. Nothing is added later."
      },
      {
       "type": "p",
@@ -1847,7 +1847,7 @@
      {
       "type": "qa",
       "q": "How much does it cost to remove one washing machine?",
-      "a": "A single item job is charged at our $250 minimum. If you have other rubbish to go, add it to the same visit so you get more value from the booking."
+      "a": "A single item job is a minimum pickup at {{price.household}}. If you have other rubbish to go, add it to the same visit so you get more value from the booking."
      },
      {
       "type": "qa",
@@ -1857,7 +1857,7 @@
      {
       "type": "qa",
       "q": "Can you clear my Kogarah office or clinic outside business hours?",
-      "a": "Yes. Just let us know in advance and we will arrange a time that suits your business, before you open or after you close. We clear desks, chairs, shelving and old fit outs so you do not lose trading time. Business jobs are $120 per hour."
+      "a": "Yes. Just let us know in advance and we will arrange a time that suits your business, before you open or after you close. We clear desks, chairs, shelving and old fit outs so you do not lose trading time. Business jobs start at {{price.commercial}} for 2 m³."
      },
      {
       "type": "p",
@@ -1951,7 +1951,7 @@
     "blocks": [
      {
       "type": "p",
-      "text": "Home and apartment jobs are $90 per hour. Renovation and building waste is $150 per hour, and every booking has a $250 minimum. Your price includes the crew, the loading, the sweep up and the tip fees, so there is nothing extra at the end."
+      "text": "Home and apartment jobs start at {{price.household}}. Renovation and building waste starts at {{price.builder}} for 2 m³. Your price includes the crew, the loading, the sweep up and the tip fees, so there is nothing extra at the end."
      },
      {
       "type": "p",
@@ -1970,7 +1970,7 @@
      {
       "type": "qa",
       "q": "Do you offer renovation rubbish removal in Lane Cove for bathrooms and kitchens?",
-      "a": "Yes. Lane Cove Council's [clean up](https://www.lanecove.nsw.gov.au/Services/Waste-and-Recycling/Book-a-Council-Clean-up) refuses baths, vanities, toilets, tiles and plasterboard, but our renovation rubbish removal covers all of it. Building waste is $150 per hour, and we can come during the job or once it is finished. We cannot take asbestos or wet concrete. See our [Building Materials Disposal](/building-materials-disposal) service."
+      "a": "Yes. Lane Cove Council's [clean up](https://www.lanecove.nsw.gov.au/Services/Waste-and-Recycling/Book-a-Council-Clean-up) refuses baths, vanities, toilets, tiles and plasterboard, but our renovation rubbish removal covers all of it. Building waste starts at {{price.builder}} for 2 m³, and we can come during the job or once it is finished. We cannot take asbestos or wet concrete. See our [Building Materials Disposal](/building-materials-disposal) service."
      },
      {
       "type": "qa",
@@ -2075,7 +2075,7 @@
     "blocks": [
      {
       "type": "p",
-      "text": "Our rates are $90 per hour for homes and apartments, $120 per hour for shops and offices, and $150 per hour for renovation and building waste, with a $250 minimum per job. Your quote covers the labour, loading, sweep up and disposal fees, so there are no hidden costs."
+      "text": "Homes and apartments start at {{price.household}}, shops and offices at {{price.commercial}} for 2 m³, and renovation and building waste at {{price.builder}} for 2 m³. Your quote covers the labour, loading, sweep up and disposal fees, so there are no hidden costs."
      },
      {
       "type": "p",
@@ -2145,7 +2145,7 @@
      },
      {
       "type": "p",
-      "text": "These are the very items council clean ups refuse. We take them. Our crew loads building rubbish straight from your site, garage or backyard, so the job can keep moving. Building and renovation waste is charged at $150 per hour. Learn more about our [construction site clean up](/construction-site-clean-up) and [timber removal](/timber-removal) services."
+      "text": "These are the very items council clean ups refuse. We take them. Our crew loads building rubbish straight from your site, garage or backyard, so the job can keep moving. Building and renovation waste starts at {{price.builder}} for 2 m³. Learn more about our [construction site clean up](/construction-site-clean-up) and [timber removal](/timber-removal) services."
      },
      {
       "type": "h3",
@@ -2201,7 +2201,7 @@
     "blocks": [
      {
       "type": "p",
-      "text": "We charge $90 per hour for household jobs, $120 per hour for shops and businesses along Anzac Parade, and $150 per hour for building and renovation waste. The minimum is $250 per job. Labour, loading, the clean up and all tip fees are part of the price."
+      "text": "Household jobs start at {{price.household}}, shops and businesses along Anzac Parade at {{price.commercial}} for 2 m³, and building and renovation waste at {{price.builder}} for 2 m³. The minimum pickup is {{price.household}}. Labour, loading, the clean up and all tip fees are part of the price."
      },
      {
       "type": "p",
@@ -2330,7 +2330,7 @@
     "blocks": [
      {
       "type": "p",
-      "text": "Rubbish removal for homes costs $90 per hour and business jobs are $120 per hour. Every job has a $250 minimum, and the cost of labour, loading, cleaning up and disposal is built into your quote."
+      "text": "Rubbish removal for homes starts at {{price.household}}, and business jobs start at {{price.commercial}} for 2 m³. The cost of labour, loading, cleaning up and disposal is built into your quote."
      },
      {
       "type": "p",
@@ -2359,7 +2359,7 @@
      {
       "type": "qa",
       "q": "Do you also cover Rosebery, Alexandria and Eastlakes?",
-      "a": "Yes. Every suburb around the airport gets the same hourly rates and the same service. Tell us your suburb when you [book online](/contact) and we will plan the pickup around your building."
+      "a": "Yes. Every suburb around the airport gets the same fixed prices and the same service. Tell us your suburb when you [book online](/contact) and we will plan the pickup around your building."
      },
      {
       "type": "p",
@@ -2515,7 +2515,7 @@
     "blocks": [
      {
       "type": "p",
-      "text": "Every job has a $250 minimum charge. After that, residential rubbish removal is $90 per hour. Renovation and building waste is charged at our construction rate of $150 per hour. Each price includes labour, loading, cleanup and disposal."
+      "text": "The minimum pickup is {{price.household}}. After that, prices go up by load size, to {{price.full}} for a full 8 m³ truck. Renovation and building waste starts at {{price.builder}} for 2 m³. Each price includes labour, loading, cleanup and disposal."
      },
      {
       "type": "p",
@@ -2645,7 +2645,7 @@
     "blocks": [
      {
       "type": "p",
-      "text": "House and apartment jobs are $90 per hour, with a $250 minimum per booking. Renovation and building waste is $150 per hour. The price covers the crew, the truck, the carrying, the clean up and the tip fees, so even a whole house clear out is quoted upfront with nothing added later."
+      "text": "House and apartment jobs start at {{price.household}} for a minimum pickup. Renovation and building waste starts at {{price.builder}} for 2 m³. The price covers the crew, the truck, the carrying, the clean up and the tip fees, so even a whole house clear out is quoted upfront with nothing added later."
      },
      {
       "type": "p",
@@ -2769,7 +2769,7 @@
     "blocks": [
      {
       "type": "p",
-      "text": "Apartment and home jobs are $90 per hour, offices and shops are $120 per hour, and renovation or building waste is $150 per hour. Every job has a $250 minimum, and your quote covers the labour, loading, sweep up and disposal fees."
+      "text": "Apartment and home jobs start at {{price.household}}, offices and shops at {{price.commercial}} for 2 m³, and renovation or building waste at {{price.builder}} for 2 m³. Your quote covers the labour, loading, sweep up and disposal fees."
      },
      {
       "type": "p",
@@ -2788,7 +2788,7 @@
      {
       "type": "qa",
       "q": "Do you offer apartment rubbish removal in North Sydney for more than the 0.5 cubic metre council allowance per unit?",
-      "a": "Yes. Our apartment rubbish removal has no volume cap. Whether it is one couch or everything in a studio, we clear it in a single booking and you only pay for the time we spend, instead of splitting the job across several fortnightly council pick ups."
+      "a": "Yes. Our apartment rubbish removal has no volume cap. Whether it is one couch or everything in a studio, we clear it in a single booking for one fixed price, instead of splitting the job across several fortnightly council pick ups."
      },
      {
       "type": "qa",
@@ -3023,7 +3023,7 @@
      },
      {
       "type": "p",
-      "text": "We work before opening or after closing, so you do not lose trading time, and we keep the footpath clear for shoppers. Business jobs are charged at $120 per hour. Find out more on our [retail strip out removal](/retail-strip-out-removal) page."
+      "text": "We work before opening or after closing, so you do not lose trading time, and we keep the footpath clear for shoppers. Business jobs start at {{price.commercial}} for 2 m³. Find out more on our [retail strip out removal](/retail-strip-out-removal) page."
      },
      {
       "type": "p",
@@ -3075,7 +3075,7 @@
     "blocks": [
      {
       "type": "p",
-      "text": "Residential jobs are billed at $90 an hour and shop or office jobs cost $120 per hour. The minimum charge for any job is $250. The quote covers the crew, the truck and disposal, so it is the price you pay."
+      "text": "Residential jobs start at {{price.household}}, and shop or office jobs start at {{price.commercial}} for 2 m³. The minimum pickup is {{price.household}} for up to 1 m³. The quote covers the crew, the truck and disposal, so it is the price you pay."
      },
      {
       "type": "p",
@@ -3332,7 +3332,7 @@
     "blocks": [
      {
       "type": "p",
-      "text": "Our minimum charge is $250 per job. After that, home rubbish removal is $90 per hour and business jobs are $120 per hour. Labour, loading, cleaning and tip costs are all built into the quote."
+      "text": "Our minimum pickup is {{price.household}} for up to 1 m³ of household rubbish. After that, home rubbish removal goes up by load size to {{price.full}} for a full truck, and business loads start at {{price.commercial}} for 2 m³. Labour, loading, cleaning and tip costs are all built into the quote."
      },
      {
       "type": "p",
@@ -3574,7 +3574,7 @@
     "blocks": [
      {
       "type": "p",
-      "text": "The minimum charge for any job is $250. Household rubbish removal is $90 per hour, and renovation and building waste is $150 per hour. Every price includes labour, loading, cleanup and disposal."
+      "text": "The minimum pickup is {{price.household}} for up to 1 m³. Household rubbish removal starts at {{price.household}}, and renovation and building waste at {{price.builder}} for 2 m³. Every price includes labour, loading, cleanup and disposal."
      },
      {
       "type": "p",
@@ -3603,7 +3603,7 @@
      {
       "type": "qa",
       "q": "Can you take renovation rubbish as well as furniture?",
-      "a": "Yes. Old kitchens, tiles, timber, plasterboard and broken concrete can go in the same load as your furniture. Building and renovation waste is charged at $150 per hour, and we can collect during the job or once it is finished."
+      "a": "Yes. Old kitchens, tiles, timber, plasterboard and broken concrete can go in the same load as your furniture. Building and renovation waste starts at {{price.builder}} for 2 m³, and we can collect during the job or once it is finished."
      },
      {
       "type": "p",
@@ -3698,7 +3698,7 @@
     "blocks": [
      {
       "type": "p",
-      "text": "Home and apartment jobs are $90 per hour. Renovation and building waste is $150 per hour, and every booking has a $250 minimum. The price includes the crew, the lifting, the sweep up and the tip fees, so you know the cost before we start."
+      "text": "Home and apartment jobs start at {{price.household}}. Renovation and building waste starts at {{price.builder}} for 2 m³. The price includes the crew, the lifting, the sweep up and the tip fees, so you know the cost before we start."
      },
      {
       "type": "p",
@@ -4079,7 +4079,7 @@
     "blocks": [
      {
       "type": "p",
-      "text": "Our minimum charge is $250 per job. Household rubbish removal is $90 per hour, and shops and offices near the station are charged at our commercial rate of $120 per hour. Labour, loading, cleanup and disposal are all included in the price."
+      "text": "Our minimum pickup is {{price.household}} for up to 1 m³ of household rubbish. Household rubbish removal starts at {{price.household}}, and shops and offices near the station pay our commercial load prices, from {{price.commercial}} for 2 m³. Labour, loading, cleanup and disposal are all included in the price."
      },
      {
       "type": "p",

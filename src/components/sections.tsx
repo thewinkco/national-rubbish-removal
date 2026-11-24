@@ -5,7 +5,7 @@ import { Mascot, MascotBadge, PointDownCue } from "./Mascot";
 import { ArrowRight, ArrowUpRight, CurrencyCircleDollar, Prohibit, Check, CaretRight, Clock, Barbell, Broom, Leaf, MapPin, Phone, Plus, Recycle, ShieldCheck, X } from "@phosphor-icons/react/ssr";
 import { CATEGORIES, servicesIn, type Category } from "@/content/services";
 import { SUBURBS, type Suburb } from "@/content/suburbs";
-import { GOOGLE_RATING, PRICING, REVIEWS, SITE, formatPrice } from "@/content/site";
+import { GOOGLE_RATING, REVIEWS, SITE, formatPrice, fromPrice } from "@/content/site";
 import type { Faq } from "@/content/faqs";
 import { Inline } from "./Rich";
 import { CallLink, WhatsAppLink } from "./ContactLinks";
@@ -15,7 +15,7 @@ import { QuoteForm } from "./QuoteForm";
 import { ReviewCard, ReviewWall } from "./ReviewWall";
 import { Reveal } from "./motion/Reveal";
 import { HeroIn } from "./motion/HeroIn";
-import type { CategoryId, LoadId } from "@/content/site";
+import type { JobType, VolumeId } from "@/content/site";
 
 export function SectionHeading({
   eyebrow,
@@ -141,8 +141,8 @@ export function PageHero({
   breadcrumbs: { name: string; path: string }[];
   image: string;
   imageAlt: string;
-  defaultService?: CategoryId;
-  defaultLoad?: LoadId;
+  defaultService?: JobType;
+  defaultLoad?: VolumeId;
   formOnPage?: boolean;
 }) {
   return (
@@ -490,7 +490,7 @@ export function CategoryCards({ headingLevel = "h3" }: { headingLevel?: "h2" | "
   return (
     <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
       {CATEGORIES.map((cat, i) => {
-        const price = PRICING.find((p) => p.id === cat.id);
+        const price = fromPrice(cat.id);
         return (
           <Reveal
             as="article"
@@ -513,7 +513,7 @@ export function CategoryCards({ headingLevel = "h3" }: { headingLevel?: "h2" | "
               {price && (
                 <span className="absolute bottom-4 left-4 flex items-baseline gap-1.5 text-white">
                   <span className="text-[12.5px] text-white/80">From</span>
-                  <span className="font-display text-[26px] leading-none tabular-nums">{formatPrice(price.minCharge)}</span>
+                  <span className="font-display text-[26px] leading-none tabular-nums">{formatPrice(price)}</span>
                 </span>
               )}
             </div>
@@ -622,7 +622,7 @@ export function QuoteSection({
 }: {
   title?: string;
   intro?: string;
-  defaultService?: CategoryId;
+  defaultService?: JobType;
   context?: string;
 }) {
   return (

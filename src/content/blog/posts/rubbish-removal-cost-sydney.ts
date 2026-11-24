@@ -1,19 +1,20 @@
-import { LOAD_SIZES, PRICING, calculateQuote, formatPrice } from "@/content/site";
+import { JOB_TYPES, PRICE_GUIDE, VOLUMES, formatQuote, quoteFor, type JobType, type VolumeId } from "@/content/site";
 import type { BlogPost } from "../types";
 
 const slug = "rubbish-removal-cost-sydney";
 const img = (name: string) => `/images/blog/${slug}/${name}`;
-const [res, com, con] = PRICING;
-const range = (id: (typeof PRICING)[number]["id"], load: (typeof LOAD_SIZES)[number]["id"]) => {
-  const q = calculateQuote(id, load);
-  return `${formatPrice(q.low)}–${formatPrice(q.high)}`;
-};
+// Every price comes from the price list in src/content/site.ts, so this post updates itself when prices change.
+const H: JobType = "residential-rubbish-removal";
+const G: JobType = "green-waste-removal";
+const B: JobType = "construction-rubbish-removal";
+const p = (job: JobType, vol: VolumeId) => formatQuote(quoteFor(job, vol));
+const guide = (label: string) => PRICE_GUIDE.flatMap((g) => g.items).find((i) => i.label === label)!.price;
 
 export const post: BlogPost = {
   slug,
   title: "How Much Does Rubbish Removal Cost in Sydney? (2026)",
   h1: "How Much Does Rubbish Removal Cost in Sydney? A 2026 Price Guide",
-  description: `Sydney rubbish removal costs from ${formatPrice(res.minCharge)} for a single item to about ${range(res.id, "full")} for a full truck. See real prices by load size and what changes the quote.`,
+  description: `Sydney rubbish removal costs ${p(H, "single")} for a minimum pickup up to ${p(H, "8")} for a full 8 m³ truck. Real 2026 prices by load size, plus estate and strip-out guides.`,
   excerpt: "Real 2026 prices by load size for household, business and building waste, plus the five things that push a quote up or down.",
   category: "Pricing & Costs",
   primaryKeyword: "rubbish removal cost sydney",
@@ -28,10 +29,10 @@ export const post: BlogPost = {
     height: 810,
   },
   ogImage: img(`${slug}-og.jpg`),
-  answer: `Rubbish removal in Sydney costs about ${range(res.id, "single-item")} for a single bulky item, ${range(res.id, "half")} for half a truck and ${range(res.id, "full")} for a full 10 m³ truck of household rubbish. Business waste runs about ${formatPrice(com.ratePerM3)} per m³ and building rubble about ${formatPrice(con.ratePerM3)} per m³, because it is heavier and costs more to tip.`,
+  answer: `Rubbish removal in Sydney with NRR costs ${p(H, "single")} for a minimum pickup (one bulky item), ${p(H, "4")} for half a truck (4 m³) and ${p(H, "8")} for a full 8 m³ truck of household rubbish. Clean green waste is cheaper, from ${p(G, "1")}, while mixed builder waste starts at ${p(B, "2")} for 2 m³ because it costs more to tip.`,
   takeaways: [
     "You pay for the space your rubbish takes up in the truck (cubic metres), not the number of items.",
-    `Minimum charges start at ${formatPrice(res.minCharge)} for homes, ${formatPrice(com.minCharge)} for businesses and ${formatPrice(con.minCharge)} for building waste.`,
+    `Household pickups start at ${p(H, "single")}, clean green waste at ${p(G, "1")}, and builder or commercial loads at ${p(B, "2")}.`,
     "Labour, loading, transport, tip fees and sweep-up should all be in the price. Ask if they are not.",
     "Heavy materials (bricks, concrete, soil) cost more per cubic metre because tip fees are charged by weight.",
     "Send photos before booking and you can lock a fixed price before anyone lifts a thing.",
@@ -40,7 +41,7 @@ export const post: BlogPost = {
     { type: "h2", text: "How is rubbish removal priced in Sydney?" },
     {
       type: "p",
-      text: "Almost every Sydney rubbish removalist prices by **volume**: how much of the truck your rubbish fills. A standard truck holds about 10 cubic metres (m³), which is roughly the size of a 6-metre skip bin or a single garage packed waist-high. Quotes are usually given in fractions of a truck: single item, quarter, half, three-quarter and full.",
+      text: "Almost every Sydney rubbish removalist prices by **volume**: how much of the truck your rubbish fills. Our truck holds 8 cubic metres (m³), roughly the size of a large skip bin or a single garage packed waist-high. Quotes are usually given by the cubic metre or by fractions of a truck: quarter, half, three-quarter and full.",
     },
     {
       type: "p",
@@ -55,17 +56,17 @@ export const post: BlogPost = {
     { type: "h2", text: "Rubbish removal prices by load size (2026)" },
     {
       type: "p",
-      text: "These are the ranges we quote today across the Sydney metro area. They include the two-person crew, all lifting and loading, transport, tip fees and a sweep-up. The final figure depends on access and what's in the load (more on that below).",
+      text: "These are our prices today across the Sydney metro area. Household, green waste and builder waste are fixed by load size; commercial loads show a range. Every price includes the two-person crew, all lifting and loading, transport, tip fees and a sweep-up. Heavy loads and difficult access are quoted from photos (more on that below).",
     },
     {
       type: "table",
-      caption: "National Rubbish Removal price ranges, Sydney metro, including labour, loading and tip fees",
-      head: ["Load size", "Roughly", "Household", "Business", "Building waste"],
-      rows: LOAD_SIZES.map((l) => [l.label, l.hint, range(res.id, l.id), range(com.id, l.id), range(con.id, l.id)]),
+      caption: "National Rubbish Removal prices, Sydney metro, including labour, loading and tip fees",
+      head: ["Load size", "Roughly", ...JOB_TYPES.map((j) => j.label)],
+      rows: VOLUMES.map((v) => [v.label, v.hint, ...JOB_TYPES.map((j) => (j.tiers[v.id] ? p(j.id, v.id) : "–"))]),
     },
     {
       type: "p",
-      text: `Bigger or longer jobs, like a full house clear-out or an office strip-out, can be priced by the hour instead: ${formatPrice(res.hourly)} per hour for homes, ${formatPrice(com.hourly)} for businesses and ${formatPrice(con.hourly)} for construction sites. Either way, you get the number before work starts.`,
+      text: `Bigger jobs are priced as a whole job rather than by the load. As a guide, a single-room estate clearance is ${guide("Single room")}, a three-bedroom home ${guide("3 bedroom home")}, and a standard bathroom strip-out ${guide("Standard bathroom strip-out")}. See every guide price on our [price guide](/quote-estimator#bigger-jobs). Either way, you get the number before work starts.`,
     },
     { type: "h2", text: "What makes a rubbish removal quote go up or down?" },
     {
@@ -132,7 +133,7 @@ export const post: BlogPost = {
     {
       type: "cta",
       title: "Want a ballpark right now?",
-      text: "Pick the type of rubbish and the load size in our estimator and see your price range in seconds. No phone number needed.",
+      text: "Pick the type of rubbish and the load size in our estimator and see your price in seconds. No phone number needed.",
     },
   ],
   faqs: [
@@ -142,11 +143,11 @@ export const post: BlogPost = {
     },
     {
       q: "How much does it cost to remove a single item like a couch or mattress in Sydney?",
-      a: `Single bulky items start at the minimum charge: about ${range(res.id, "single-item")} for household items. Adding a few more items to the same pickup often costs little extra, so it's worth clearing anything else at the same time.`,
+      a: `A single bulky item is a minimum pickup: ${p(H, "single")} for household items, covering anything up to 1 m³. A full cubic metre is ${p(H, "1")}, so it's worth clearing anything else at the same time.`,
     },
     {
       q: "Is rubbish removal priced per hour or per load?",
-      a: `Most jobs are priced per load (by volume). Very large or slow jobs, like a deceased estate or an office strip-out, can be priced by the hour: ${formatPrice(res.hourly)} for homes, ${formatPrice(com.hourly)} for businesses and ${formatPrice(con.hourly)} for building sites.`,
+      a: "We price per load (by volume), with a fixed price agreed before we start. Bigger jobs like deceased estates, strip-outs and factory clear-outs get a whole-job price from photos or a walk-through, and our price guide shows the usual ranges.",
     },
     {
       q: "Does the price include tip fees?",

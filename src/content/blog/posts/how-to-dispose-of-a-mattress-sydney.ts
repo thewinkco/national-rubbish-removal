@@ -1,9 +1,9 @@
-import { calculateQuote, formatPrice } from "@/content/site";
+import { formatPrice, quoteFor } from "@/content/site";
 import type { BlogPost } from "../types";
 
 const slug = "how-to-dispose-of-a-mattress-sydney";
 const img = (name: string) => `/images/blog/${slug}/${name}`;
-const single = calculateQuote("residential-rubbish-removal", "single-item");
+const single = quoteFor("residential-rubbish-removal", "single");
 
 export const post: BlogPost = {
   slug,
@@ -47,7 +47,7 @@ export const post: BlogPost = {
         ["Retailer take-back", "Usually a fee, added to delivery", "When the new mattress arrives", "No"],
         ["Drop it at a recycler or transfer station", "A gate fee, plus a trailer or van", "Same day if you can transport it", "Yes, all the way"],
         ["Donate it", "Free", "Rarely accepted", "Yes"],
-        ["Rubbish removal pickup", `From about ${formatPrice(single.low)}`, "Same day available", "No"],
+        ["Rubbish removal pickup", `${formatPrice(single.low)}`, "Same day available", "No"],
       ],
     },
     { type: "h3", text: "1. Council clean-up" },
@@ -79,7 +79,7 @@ export const post: BlogPost = {
     { type: "h3", text: "5. Rubbish removal pickup" },
     {
       type: "p",
-      text: `A [mattress removal](/mattress-removal) pickup costs about ${formatPrice(single.low)}–${formatPrice(single.high)} for a single mattress, collected from anywhere in the house. It's the fastest option, and it makes most sense when you've got other things to go as well, like the old bed base, bedside tables or a few bags, because they share the same minimum charge.`,
+      text: `A [mattress removal](/mattress-removal) pickup costs ${formatPrice(single.low)} for a single mattress, collected from anywhere in the house. It's the fastest option, and it makes most sense when you've got other things to go as well, like the old bed base, bedside tables or a few bags, because the minimum pickup covers anything up to 1 m³.`,
     },
     { type: "review", name: "Belinda Jovcevski" },
     { type: "h2", text: "Can I just leave my mattress on the street?" },
@@ -113,7 +113,7 @@ export const post: BlogPost = {
   faqs: [
     {
       q: "How much does mattress removal cost in Sydney?",
-      a: `A single mattress pickup with National Rubbish Removal costs about ${formatPrice(single.low)}–${formatPrice(single.high)}, including carrying it out, transport and disposal. Additional items in the same pickup cost little extra.`,
+      a: `A single mattress pickup with National Rubbish Removal costs ${formatPrice(single.low)} as a minimum pickup, including carrying it out, transport and disposal. Additional items in the same pickup cost little extra.`,
     },
     {
       q: "Will the council collect my old mattress?",

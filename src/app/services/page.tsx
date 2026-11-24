@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Check, Clock, Leaf, ShieldWarning } from "@phosphor-icons/react/ssr";
 import { CATEGORIES, servicesIn } from "@/content/services";
-import { PRICING, formatPrice } from "@/content/site";
+import { JOB_TYPES, formatPrice, formatQuote, fromPrice, quoteFor, volumesFor } from "@/content/site";
 import { GENERAL_FAQS } from "@/content/faqs";
 import { JsonLd } from "@/components/JsonLd";
 import { TabAnchor } from "@/components/TabAnchor";
@@ -62,7 +62,6 @@ export default function ServicesPage() {
       </nav>
 
       {CATEGORIES.map((cat, idx) => {
-        const price = PRICING.find((p) => p.id === cat.id)!;
         return (
           <section key={cat.id} id={cat.id} className={`scroll-mt-44 py-20 lg:py-24 ${idx % 2 ? "bg-mist" : "bg-white"}`}>
             <div className="container-x grid items-start gap-12 lg:grid-cols-2">
@@ -71,7 +70,7 @@ export default function ServicesPage() {
                 <h2 className="h-display mt-3 text-3xl text-ink-800 sm:text-4xl">{cat.name}</h2>
                 <p className="mt-4 text-lg leading-relaxed text-ink-600">{cat.pitch}</p>
                 <p className="mt-4 inline-flex items-center gap-2 rounded-lg bg-mist px-4 py-2 text-sm font-medium text-ink-800">
-                  From {formatPrice(price.minCharge)} · {formatPrice(price.ratePerM3)}/m³
+                  From {formatPrice(fromPrice(cat.id))} · fixed price before we start
                 </p>
                 <ul className="mt-8 grid gap-3 sm:grid-cols-2">
                   {servicesIn(cat.id).map((s) => (
@@ -101,24 +100,34 @@ export default function ServicesPage() {
           <SectionHeading
             eyebrow="Transparent pricing"
             title="You pay for the space your rubbish takes. That's it."
-            intro="No labour surcharges. No tip-fee surprises. No 'that'll be extra' on the day. Your price covers labour, loading, sweep-up and disposal."
+            intro="Fixed prices by load size. No labour surcharges, no tip-fee surprises, no 'that'll be extra' on the day. Your price covers labour, loading, sweep-up and disposal."
             dark
           />
-          <div className="mt-14 grid gap-5 md:grid-cols-3">
-            {PRICING.map((p) => (
+          <div className="mt-14 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+            {JOB_TYPES.map((p) => {
+              const sizes = volumesFor(p.id);
+              const first = quoteFor(p.id, sizes[0].id);
+              const full = quoteFor(p.id, sizes[sizes.length - 1].id);
+              return (
               <div key={p.id} className="rounded-2xl border border-white/10 bg-white/[0.04] p-7">
                 <p className="font-display text-xl">{p.label}</p>
                 <p className="mt-1 text-sm text-white/60">{p.blurb}</p>
-                <p className="mt-6 font-display text-5xl text-brand">{formatPrice(p.ratePerM3)}<span className="text-lg text-white/60">/m³</span></p>
-                <p className="mt-2 text-sm text-white/70">Minimum charge {formatPrice(p.minCharge)}</p>
+                <p className="mt-6 text-sm text-white/60">From</p>
+                <p className="font-display text-5xl text-brand">{formatPrice(first.low)}</p>
+                <p className="mt-2 text-sm text-white/70">{first.volume.label} · full truck (8 m³) {formatQuote(full)}</p>
                 <ul className="mt-6 space-y-2 text-[14px] text-white/80">
                   {["Labour & loading", "Disposal & tip fees", "Swept-clean finish"].map((t) => (
                     <li key={t} className="flex items-center gap-2"><Check className="h-4 w-4 text-brand" aria-hidden /> {t}</li>
                   ))}
                 </ul>
               </div>
-            ))}
+              );
+            })}
           </div>
+          <p className="mt-6 text-[15px] text-white/70">
+            See every load size and our guide prices for estates, strip-outs and factory clear-outs on the{" "}
+            <Link href="/quote-estimator" className="font-medium text-white underline decoration-white/40 underline-offset-4 hover:decoration-white">price guide</Link>.
+          </p>
           <div className="mt-10 grid gap-5 md:grid-cols-3">
             {[
               { icon: Clock, t: "Same day service", d: "Urgent removals available when you book before 1pm." },
