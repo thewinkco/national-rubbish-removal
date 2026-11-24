@@ -94,6 +94,7 @@ export function Footer() {
                 ["/services", "All services"],
                 ["/quote-estimator", "Price estimator"],
                 ["/location", "Service areas"],
+                ["/blog", "Guides & tips"],
                 ["/about", "About us"],
                 ["/contact", "Contact"],
                 ["/sitemap", "Sitemap"],

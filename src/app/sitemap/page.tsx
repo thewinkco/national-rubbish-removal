@@ -3,6 +3,7 @@ import { CATEGORIES, servicesIn } from "@/content/services";
 import { REGION_ORDER, SUBURBS } from "@/content/suburbs";
 import { Breadcrumbs } from "@/components/sections";
 import { pageMetadata } from "@/lib/meta";
+import { POSTS } from "@/content/blog";
 
 export const metadata = pageMetadata({
   title: "Sitemap | National Rubbish Removal",
@@ -17,6 +18,7 @@ const MAIN = [
   ["/contact", "Contact"],
   ["/location", "Service Areas"],
   ["/quote-estimator", "Quote Estimator"],
+  ["/blog", "Guides & Tips"],
   ["/policy", "Privacy Policy"],
   ["/terms", "Terms of Service"],
 ];
@@ -57,6 +59,12 @@ export default function HtmlSitemapPage() {
               </ul>
             </div>
           ))}
+          <div>
+            <h2 className="font-display text-lg text-ink-800">Guides &amp; tips</h2>
+            <ul className="mt-3 space-y-2">
+              {POSTS.map((p) => <li key={p.slug}><Link href={`/blog/${p.slug}`} className="text-ink-600 hover:text-brand-ink">{p.h1}</Link></li>)}
+            </ul>
+          </div>
         </div>
       </section>
     </>

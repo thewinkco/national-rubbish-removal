@@ -137,6 +137,68 @@ export function webPageSchema(opts: { path: string; name: string; description: s
   };
 }
 
+export function blogSchema(opts: { path: string; name: string; description: string; posts: { slug: string; h1: string; published: string }[] }) {
+  return {
+    "@type": "Blog",
+    "@id": `${abs(opts.path)}#blog`,
+    url: abs(opts.path),
+    name: opts.name,
+    description: opts.description,
+    inLanguage: "en-AU",
+    isPartOf: { "@id": WEBSITE_ID },
+    publisher: { "@id": BUSINESS_ID },
+    blogPost: opts.posts.map((p) => ({
+      "@type": "BlogPosting",
+      "@id": `${abs(`/blog/${p.slug}`)}#article`,
+      headline: p.h1,
+      url: abs(`/blog/${p.slug}`),
+      datePublished: p.published,
+    })),
+  };
+}
+
+export function blogPostingSchema(opts: {
+  path: string;
+  headline: string;
+  description: string;
+  images: string[];
+  published: string;
+  updated: string;
+  wordCount: number;
+  keywords: string[];
+  section: string;
+  author: { name: string; kind: "Organization" | "Person"; role: string; image?: string };
+  /** Service URLs the article is about, so search engines connect the guide to the business offer. */
+  about: string[];
+}) {
+  const url = abs(opts.path);
+  const author =
+    opts.author.kind === "Person"
+      ? { "@type": "Person", name: opts.author.name, jobTitle: opts.author.role, worksFor: { "@id": BUSINESS_ID }, ...(opts.author.image && { image: abs(opts.author.image) }) }
+      : { "@type": "Organization", name: opts.author.name, url: abs("/about"), parentOrganization: { "@id": BUSINESS_ID } };
+  return {
+    "@type": "BlogPosting",
+    "@id": `${url}#article`,
+    mainEntityOfPage: { "@id": `${url}#webpage` },
+    url,
+    headline: opts.headline,
+    description: opts.description,
+    image: opts.images.map(abs),
+    datePublished: `${opts.published}T08:00:00+11:00`,
+    dateModified: `${opts.updated}T08:00:00+11:00`,
+    author,
+    publisher: { "@id": BUSINESS_ID },
+    isPartOf: { "@id": `${abs("/blog")}#blog` },
+    articleSection: opts.section,
+    keywords: opts.keywords.join(", "),
+    wordCount: opts.wordCount,
+    inLanguage: "en-AU",
+    about: opts.about.map((u) => ({ "@type": "Service", url: abs(u) })),
+    // Marks the quick answer and key takeaways as the parts voice assistants should read aloud.
+    speakable: { "@type": "SpeakableSpecification", cssSelector: ["[data-speakable]"] },
+  };
+}
+
 export function graph(...nodes: object[]) {
   return { "@context": "https://schema.org", "@graph": nodes };
 }

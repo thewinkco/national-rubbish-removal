@@ -13,6 +13,7 @@ import { useScrollLock } from "./motion/SmoothScroll";
 
 const NAV = [
   { href: "/quote-estimator", label: "Pricing" },
+  { href: "/blog", label: "Guides" },
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
 ];

@@ -16,6 +16,9 @@ npm run build && npm start
 | 17 service pages (titles, meta, hero hook, pain points, items taken) | `src/content/services.ts` |
 | 21 suburb pages (title, meta, council, postcode, nearby suburbs) | `src/content/suburbs.ts` |
 | General FAQs | `src/content/faqs.ts` |
+| Blog posts (one file per post), authors, helpers | `src/content/blog/` — see `docs/BLOG-GUIDELINES.md` and `docs/BLOG-CONTENT-PLAN.md` |
+| Blog images (cover, social card, in-article) | `npm run blog:images` (`scripts/blog-images.mjs`) |
+| Blog QA against a running build | `npm run check:blog [base-url]` |
 | Unique long-form copy migrated from the old site (local council info, census data, service detail) | `src/content/legacy.json` |
 | Page sections (offer stack, comparison, reviews, FAQ, CTA…) | `src/components/sections.tsx` |
 | Price estimator / 2-step quote form | `src/components/QuoteEstimator.tsx`, `src/components/QuoteForm.tsx` |

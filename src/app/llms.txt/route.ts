@@ -1,6 +1,7 @@
 import { CATEGORIES, servicesIn } from "@/content/services";
 import { REGION_ORDER, SUBURBS } from "@/content/suburbs";
 import { GENERAL_FAQS } from "@/content/faqs";
+import { POSTS } from "@/content/blog";
 import { EXCLUDED_ITEMS, GOOGLE_RATING, LOAD_SIZES, PRICING, SITE, calculateQuote, formatPrice } from "@/content/site";
 
 // /llms.txt (https://llmstxt.org): a plain Markdown summary of the business for AI assistants and answer engines.
@@ -55,6 +56,7 @@ function build() {
     `- [Service areas](${u("/location")}): every Sydney suburb and region covered`,
     `- [About](${u("/about")}): the team, recycling and how jobs are run`,
     `- [Contact and free quote](${u("/contact")}): phone, WhatsApp, email and quote form`,
+    `- [Guides and tips](${u("/blog")}): answers to common rubbish removal questions in Sydney`,
     "",
   );
 
@@ -73,6 +75,10 @@ function build() {
     push("");
   }
 
+  push("## Guides (quick answers)", "");
+  for (const p of POSTS) push(`- [${p.h1}](${u(`/blog/${p.slug}`)}) (updated ${p.updated}): ${p.answer}`);
+  push("");
+
   push("## Frequently asked questions", "");
   for (const f of GENERAL_FAQS) push(`### ${f.q}`, "", f.a, "");
 
@@ -81,6 +87,7 @@ function build() {
     "",
     `- [Sitemap (HTML)](${u("/sitemap")})`,
     `- [XML sitemap](${u("/sitemap.xml")})`,
+    `- [Blog RSS feed](${u("/blog/rss.xml")})`,
     `- [Privacy policy](${u("/policy")})`,
     `- [Terms of service](${u("/terms")})`,
     "",

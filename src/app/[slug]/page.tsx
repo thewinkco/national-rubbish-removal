@@ -6,6 +6,8 @@ import { SUBURBS, getSuburb, type Region, type Suburb } from "@/content/suburbs"
 import { EXCLUDED_ITEMS } from "@/content/site";
 import { getSuburbGuide } from "@/content/suburb-guides";
 import { GENERAL_FAQS } from "@/content/faqs";
+import { postsForService } from "@/content/blog";
+import { PostCard } from "@/components/blog/PostCard";
 import { splitLegacy, plain } from "@/lib/legacy";
 import { pageMetadata } from "@/lib/meta";
 import { breadcrumbSchema, faqSchema, graph, serviceSchema, webPageSchema } from "@/lib/schema";
@@ -165,6 +167,7 @@ function ServicePage({ service }: { service: Service }) {
       <Process dark title={`${service.name} in 4 simple steps`} />
       <Reviews />
       <RelatedServices category={category} exclude={service.slug} />
+      <RelatedGuides serviceSlug={service.slug} serviceName={service.name} />
       <CtaBand title={`Ready for ${service.name.toLowerCase()}? It could be gone today.`} body="Book before 1pm for same day pickup. Price locked before we lift a thing." />
       <AreasGrid title={`${service.name} across Sydney`} />
       <FaqList faqs={GENERAL_FAQS} />
@@ -263,5 +266,21 @@ function SuburbPage({ suburb }: { suburb: Suburb }) {
       <AreasGrid current={suburb} />
       <QuoteSection context={suburb.name} title={`Get your ${suburb.name} rubbish removal price`} />
     </>
+  );
+}
+
+/** Blog guides that support this service: internal links from money pages to answers, and back. */
+function RelatedGuides({ serviceSlug, serviceName }: { serviceSlug: string; serviceName: string }) {
+  const guides = postsForService(serviceSlug);
+  if (!guides.length) return null;
+  return (
+    <section className="border-t border-line bg-white py-16 lg:py-20">
+      <div className="container-x">
+        <SectionHeading eyebrow="Helpful guides" title={`Before you book ${serviceName.toLowerCase()}`} intro="Straight answers to the questions we get asked most, from the crew that does the job." />
+        <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {guides.map((p) => <PostCard key={p.slug} post={p} />)}
+        </div>
+      </div>
+    </section>
   );
 }

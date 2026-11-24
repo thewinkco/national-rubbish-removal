@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "next build --webpack",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "check:blog": "node scripts/check-blog.mjs",
+    "blog:images": "node scripts/blog-images.mjs",
+    "blog:image:hermes": "node scripts/blog-image-hermes.mjs"
   },
   "dependencies": {
     "@phosphor-icons/react": "^2.1.10",
