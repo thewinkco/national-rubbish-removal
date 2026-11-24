@@ -70,7 +70,8 @@ npm run blog:image:hermes -- <slug> cover "<scene>"
 npm run blog:image:hermes -- <slug> <descriptive-file-name> "<scene>"
 ```
 
-- Needs `AI_API_URL` and `AI_API_KEY` (in `.env.local` locally; already set in the cloud environment the routines run in). Each image takes 2–5 minutes.
+- Needs `AI_API_URL` and `AI_API_KEY` (in `.env.local` locally; already set in the cloud environment the routines run in). Each image takes 2–8 minutes.
+- **Generate one image at a time** (cover first, then the others). Requests sent to Hermes in parallel time out.
 - Describe one concrete scene: who, doing what, where in Sydney, with which rubbish (e.g. "two crew loading palm fronds and branches into the truck in a leafy Sutherland Shire backyard").
 - It saves the same sizes as the library script, with the file names you give it. If Hermes fails, fall back to a library photo.
 - Look at every generated image before publishing: hands, faces, the truck's stripes and anything that looks fake. Regenerate if anything is off. Never generate fake "before and after" shots of real jobs, fake reviews or fake team members.

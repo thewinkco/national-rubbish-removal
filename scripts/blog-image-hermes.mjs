@@ -9,7 +9,8 @@
   Pass --ref <url> (repeatable) to add reference photos; by default the NRR crew and truck photos on the live
   site are used so uniforms, truck livery and photo style match the rest of the website.
 
-  Needs AI_API_URL and AI_API_KEY (environment, or .env.local when run locally). Takes 2 to 5 minutes.
+  Needs AI_API_URL and AI_API_KEY (environment, or .env.local when run locally). Takes 2 to 8 minutes.
+  Generate images ONE AT A TIME: parallel requests to Hermes time out (seen on the first routine run).
   Prints the saved paths, or exits 1 with the reason so the caller can fall back to a photo from the library
   (scripts/blog-images.mjs).
 */
@@ -99,7 +100,8 @@ const signed = (url) => {
 };
 
 async function paint() {
-  const signal = AbortSignal.timeout(300_000);
+  // Hermes can take several minutes per image, longer when busy. Run one image at a time, never in parallel.
+  const signal = AbortSignal.timeout(480_000);
   const res = await fetch(`${API_URL}/chat/completions`, {
     method: "POST",
     headers: auth,
