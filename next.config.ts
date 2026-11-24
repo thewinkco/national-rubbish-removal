@@ -78,6 +78,11 @@ const nextConfig: NextConfig = {
       { source: "/rubbish-removal-:suburb", destination: "/:suburb", permanent: true },
     ];
   },
+  async rewrites() {
+    // Versioned asset URLs from src/lib/meta.ts (e.g. /v/90788222/images/x-og.jpg) serve the real file, so an
+    // edited social-share image gets a fresh, uncached address.
+    return [{ source: "/v/:hash/:path*", destination: "/:path*" }];
+  },
   async headers() {
     return [
       {

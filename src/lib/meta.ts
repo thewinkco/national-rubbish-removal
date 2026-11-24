@@ -5,14 +5,16 @@ import type { Metadata } from "next";
 import { SITE } from "@/content/site";
 
 /**
- * Adds a content-based version (?v=abc123) to a local image URL. Images are cached for up to a year under the
+ * Adds a content-based version (/v/abc123/...) to a local image URL. Images are cached for up to a year under the
  * same address, so without this an edited social-share image keeps showing the old version in link previews.
  */
 function versioned(src: string) {
   if (!src.startsWith("/")) return src;
   try {
     const file = readFileSync(path.join(process.cwd(), "public", decodeURI(src)));
-    return `${src}?v=${createHash("md5").update(file).digest("hex").slice(0, 8)}`;
+    // The version goes in the path (not ?v=): Hostinger's CDN ignores query strings when caching.
+    // next.config.ts rewrites /v/<hash>/... back to the real file.
+    return `/v/${createHash("md5").update(file).digest("hex").slice(0, 8)}${src}`;
   } catch {
     return src;
   }
