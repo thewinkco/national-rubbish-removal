@@ -27,6 +27,7 @@ import {
   QuoteSection,
   RelatedServices,
   Reviews,
+  LocalReviews,
   SectionHeading,
   StickyAside,
 } from "@/components/sections";
@@ -189,7 +190,9 @@ function SuburbPage({ suburb }: { suburb: Suburb }) {
     { name: "Service Areas", path: "/location" },
     { name: `Rubbish Removal ${suburb.name}`, path },
   ];
-  const faqs = [...localFaqs.map((f) => ({ q: f.q, a: f.a })), ...GENERAL_FAQS.slice(0, 4)];
+  // Suburb pages show only their own local questions (general ones live on the home and service pages),
+  // topped up with general ones only if a page has fewer than three.
+  const faqs = [...localFaqs.map((f) => ({ q: f.q, a: f.a })), ...(localFaqs.length < 3 ? GENERAL_FAQS.slice(0, 3 - localFaqs.length) : [])];
   const area = `${suburb.name} NSW ${suburb.postcode}`;
   const regionImages = REGION_IMAGES[suburb.region];
 
@@ -260,10 +263,9 @@ function SuburbPage({ suburb }: { suburb: Suburb }) {
         </LegacyContent>
       )}
 
-      <OfferStack title={`Why ${suburb.name} locals choose NRR`} />
-      <Comparison councilName={`${suburb.council.split(" / ")[0]} clean-up`} />
-      <Process dark />
-      <Reviews />
+      {/* Shared blocks (offer stack, comparison, process, full review wall) live on the home and service pages.
+          Suburb pages keep their own local content front and centre, plus reviews from nearby. */}
+      <LocalReviews suburb={suburb} />
       <CtaBand title={`Want it gone from your ${suburb.name} place today?`} body="Call before 1pm and we can usually be there the same day." />
       <FaqList faqs={faqs} title={faqHeading ?? `Quick answers about ${suburb.name} rubbish removal`} />
       <AreasGrid current={suburb} />

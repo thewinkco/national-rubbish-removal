@@ -12,7 +12,7 @@ import { CallLink, WhatsAppLink } from "./ContactLinks";
 import { GoogleIcon, Stars, WhatsAppIcon } from "./icons";
 import { QuoteEstimator } from "./QuoteEstimator";
 import { QuoteForm } from "./QuoteForm";
-import { ReviewWall } from "./ReviewWall";
+import { ReviewCard, ReviewWall } from "./ReviewWall";
 import { Reveal } from "./motion/Reveal";
 import { HeroIn } from "./motion/HeroIn";
 import type { CategoryId, LoadId } from "@/content/site";
@@ -752,5 +752,56 @@ export function AreaMarquee() {
         {run(1)}
       </div>
     </div>
+  );
+}
+
+// Where each tagged Google review was, so suburb pages can show reviews from their own part of Sydney.
+const REVIEW_REGION: Record<string, Suburb["region"]> = {
+  Kirrawee: "Southern Sydney",
+  Oatley: "Southern Sydney",
+  Bexley: "Southern Sydney",
+  "East Hills": "Southern Sydney",
+  Parramatta: "Western Sydney",
+  "Georges Hall": "Western Sydney",
+  Moorebank: "Western Sydney",
+  "Mt Annan": "Western Sydney",
+  Richmond: "Western Sydney",
+  "Lane Cove": "Northern Sydney",
+  "North Sydney": "Northern Sydney",
+  "Double Bay": "Eastern Sydney",
+};
+
+const reviewPlace = (r: (typeof REVIEWS)[number]) => r.tag.split(" · ")[0];
+
+/** Three reviews for a suburb: that suburb or its neighbours first, then the same region, then a rotating pick. */
+export function pickLocalReviews(suburb: Suburb, n = 3) {
+  const near = new Set([suburb.name, ...suburb.alsoCovers, ...suburb.nearby.map((slug) => SUBURBS.find((s) => s.slug === slug)?.name ?? "")]);
+  const local = REVIEWS.filter((r) => near.has(reviewPlace(r)));
+  const regional = REVIEWS.filter((r) => !local.includes(r) && REVIEW_REGION[reviewPlace(r)] === suburb.region);
+  const rest = REVIEWS.filter((r) => !local.includes(r) && !regional.includes(r) && !REVIEW_REGION[reviewPlace(r)]);
+  let h = 0;
+  for (const c of suburb.slug) h = (h * 31 + c.charCodeAt(0)) >>> 0;
+  const rotated = [...rest.slice(h % rest.length), ...rest.slice(0, h % rest.length)];
+  return [...local, ...regional, ...rotated].slice(0, n);
+}
+
+/** Compact review section for suburb pages: rating summary plus three locally relevant reviews (not the full wall). */
+export function LocalReviews({ suburb }: { suburb: Suburb }) {
+  const picks = pickLocalReviews(suburb);
+  return (
+    <section className="bg-white py-16 lg:py-20">
+      <div className="container-x">
+        <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+          <SectionHeading eyebrow="Google reviews" title={`What customers near ${suburb.name} say`} align="left" />
+          <a href={SITE.googleReviewsUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-3 rounded-xl border border-line bg-paper px-4 py-3 text-[14px] text-ink-700 hover:border-ink-600/40">
+            <GoogleIcon className="h-4 w-4" /> <span className="font-semibold text-ink-800">{GOOGLE_RATING.score}</span> <Stars className="h-3.5 w-3.5" /> {GOOGLE_RATING.count} reviews
+            <ArrowUpRight className="h-3.5 w-3.5" aria-hidden />
+          </a>
+        </div>
+        <div className="mt-10 grid gap-4 md:grid-cols-3">
+          {picks.map((r) => <ReviewCard key={r.name} review={r} />)}
+        </div>
+      </div>
+    </section>
   );
 }
