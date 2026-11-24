@@ -7,13 +7,14 @@ import { post as council } from "./posts/council-clean-up-vs-private-rubbish-rem
 import { post as garage } from "./posts/garage-clean-out-checklist";
 import { post as estate } from "./posts/deceased-estate-clearance-guide";
 import { post as recycling } from "./posts/where-does-rubbish-go-recycling-sydney";
+import { post as greenWaste } from "./posts/green-waste-removal-sydney";
 
 export type { BlogPost, BlogBlock } from "./types";
 export { AUTHORS } from "./authors";
 
 // To publish a post: add its file in ./posts, import it here and add it to this list (any order).
 // Then run `node scripts/blog-images.mjs` for its images and `npm run check:blog` against a build.
-const ALL: BlogPost[] = [cost, skip, wontTake, mattress, council, garage, estate, recycling];
+const ALL: BlogPost[] = [cost, skip, wontTake, mattress, council, garage, estate, recycling, greenWaste];
 
 /** Newest first; posts dated in the future stay hidden until a rebuild on or after that date. */
 export const POSTS: BlogPost[] = ALL.filter((p) => p.published <= today()).sort(

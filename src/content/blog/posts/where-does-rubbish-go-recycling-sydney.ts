@@ -84,7 +84,7 @@ export const post: BlogPost = {
     { type: "h3", text: "Green waste" },
     {
       type: "p",
-      text: "Branches, palm fronds, hedge clippings and stumps from a [green waste removal](/green-waste-removal) are shredded and composted into mulch and soil conditioner that ends up back in Sydney gardens.",
+      text: "Branches, palm fronds, hedge clippings and stumps from a [green waste removal](/green-waste-removal) are shredded and composted into mulch and soil conditioner that ends up back in Sydney gardens. Our guide to [green waste removal in Sydney](/blog/green-waste-removal-sydney) covers council limits and prices.",
     },
     { type: "h3", text: "Bricks, concrete and rubble" },
     {
