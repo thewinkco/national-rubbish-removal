@@ -17,7 +17,7 @@ export const post: BlogPost = {
   excerpt: "Real 2026 prices by load size for household, business and building waste, plus the five things that push a quote up or down.",
   category: "Pricing & Costs",
   primaryKeyword: "rubbish removal cost sydney",
-  keywords: ["how much does rubbish removal cost", "rubbish removal prices sydney", "junk removal cost", "cost per cubic metre rubbish removal", "hard rubbish removal price"],
+  keywords: ["how much does rubbish removal cost", "rubbish removal prices sydney", "junk removal cost", "cost per cubic metre rubbish removal", "hard rubbish removal price", "best rubbish removal sydney"],
   published: "2026-11-24",
   updated: "2026-11-24",
   author: "nrr-crew",
@@ -114,6 +114,10 @@ export const post: BlogPost = {
         "**Waiting time** if the crew has to wait for access or for you to decide what goes.",
       ],
     },
+    {
+      type: "p",
+      text: "The best rubbish removal quote isn't always the cheapest one. It's the one that puts the lifting, tip fees and sweep-up in writing, from an insured crew with real local reviews. A cheap price without those has a habit of growing on the day.",
+    },
     { type: "review", name: "Roxy Rox" },
     { type: "h2", text: "How do I get an exact price?" },
     {
@@ -132,6 +136,10 @@ export const post: BlogPost = {
     },
   ],
   faqs: [
+    {
+      q: "How do I choose the best rubbish removal company in Sydney?",
+      a: "Look for a fixed written price that includes labour, tip fees and sweep-up, proof of insurance, genuine Google reviews from local customers, and a straight answer about which licensed facilities they use. Be wary of cash-only quotes far below everyone else's.",
+    },
     {
       q: "How much does it cost to remove a single item like a couch or mattress in Sydney?",
       a: `Single bulky items start at the minimum charge: about ${range(res.id, "single-item")} for household items. Adding a few more items to the same pickup often costs little extra, so it's worth clearing anything else at the same time.`,

@@ -34,7 +34,7 @@ export const post: BlogPost = {
     { type: "h2", text: "Why won't rubbish removalists take everything?" },
     {
       type: "p",
-      text: "Rubbish removal trucks go to licensed transfer stations that sort general waste. Those facilities can't legally accept hazardous materials mixed in with household rubbish, and loading them puts the crew, the truck and everyone at the tip at risk. A removalist who says \"we'll take anything\" either isn't disposing of it properly or will pass a hefty fee on to you.",
+      text: "Rubbish removal trucks go to licensed transfer stations that sort general waste. Those facilities can't legally accept hazardous materials mixed in with household rubbish, and loading them puts the crew, the truck and everyone at the tip at risk. A removalist who says \"we'll take anything\" either isn't disposing of it properly or will pass a hefty fee on to you. The best rubbish removal services are upfront about this short list before they arrive.",
     },
     {
       type: "p",

@@ -36,6 +36,7 @@ A post earns its place only if it answers a question people really type into Goo
 - **Show first-hand experience (the first E in E-E-A-T).** Add at least one `callout` with `tone: "tip"` titled "From the crew: …" with advice only someone who does the job would know.
 - **Add a real review.** Use a `review` block with a reviewer's name from `REVIEWS` in `site.ts`. Pick one that matches the topic. Never invent or edit a review.
 - **Tables for comparisons and prices.** AI assistants and Google pull tables into answers.
+- **"Best rubbish removal" (and "best rubbish removal Sydney") is a phrase people search.** Use it only where a reader is choosing who to hire (comparing quotes, checking a removalist, hidden fees), at most once or twice per post, always about how to pick a good service. Never claim NRR is "the best": let the reviews and facts say that.
 - **Sydney-specific.** Mention suburbs, councils, NSW rules and Sydney conditions (terraces with no driveway, strata buildings, summer storms).
 - **Be careful with facts.** Rules about councils, asbestos, waste levies and disposal change. Don't quote a fee or rule unless you've checked the official source this month (council website, NSW EPA, SafeWork NSW). When rules vary by council, say so and tell readers to check their council.
 - **No legal or financial advice.** Use a `note` callout for anything that needs a professional (see the deceased estate post).

@@ -110,6 +110,10 @@ export const post: BlogPost = {
     },
     { type: "h2", text: "How can I tell if a removalist recycles?" },
     {
+      type: "p",
+      text: "The best rubbish removal companies are happy to tell you where your load ends up. Four quick checks:",
+    },
+    {
       type: "list",
       items: [
         "Ask which facilities they use. Licensed transfer stations and recyclers are the right answer.",
