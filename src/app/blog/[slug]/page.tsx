@@ -68,7 +68,7 @@ export default async function BlogPostPage({ params }: PageProps<"/blog/[slug]">
             keywords: [post.primaryKeyword, ...post.keywords],
             section: post.category,
             author,
-            about: services.map((s) => `/${s.slug}`),
+            about: services.map((s) => ({ path: `/${s.slug}`, name: s.h1 })),
           }),
           breadcrumbSchema(crumbs),
           faqSchema(post.faqs.map((f) => ({ q: f.q, a: plain(f.a) }))),
@@ -179,13 +179,13 @@ export default async function BlogPostPage({ params }: PageProps<"/blog/[slug]">
             <h2 className="h-display text-[28px] text-ink-800 sm:text-[34px]">Services mentioned in this guide</h2>
             <div className="mt-8 grid border-t border-line sm:grid-cols-2 sm:gap-x-10">
               {services.map((s) => (
-                <Link key={s.slug} href={`/${s.slug}`} className="group flex items-start justify-between gap-4 border-b border-line py-5">
+                <div key={s.slug} className="group relative flex items-start justify-between gap-4 border-b border-line py-5">
                   <span>
-                    <span className="block font-display text-[20px] text-ink-800 group-hover:text-brand-ink">{s.name}</span>
+                    <Link href={`/${s.slug}`} className="block font-display text-[20px] text-ink-800 after:absolute after:inset-0 group-hover:text-brand-ink">{s.name}</Link>
                     <span className="mt-1 block text-[14px] leading-relaxed text-muted">{s.summary}</span>
                   </span>
                   <ArrowRight className="mt-1.5 h-4 w-4 shrink-0 text-muted transition group-hover:translate-x-0.5 group-hover:text-brand-ink" aria-hidden />
-                </Link>
+                </div>
               ))}
             </div>
           </div>

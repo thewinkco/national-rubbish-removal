@@ -13,7 +13,7 @@ export const post: BlogPost = {
   excerpt: "Council clean-up, retailer take-back, recycling, donation or a pickup: what each costs, how long it takes and which one suits you.",
   category: "Disposal & Recycling",
   primaryKeyword: "how to dispose of a mattress sydney",
-  keywords: ["mattress removal sydney", "mattress disposal sydney", "mattress recycling sydney", "get rid of old mattress", "council mattress pickup sydney"],
+  keywords: ["old mattress disposal options", "mattress disposal sydney", "mattress recycling sydney", "get rid of old mattress", "council mattress pickup sydney"],
   published: "2026-11-24",
   updated: "2026-11-24",
   author: "nrr-crew",

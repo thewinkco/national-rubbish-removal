@@ -15,7 +15,7 @@ import { QuoteForm } from "./QuoteForm";
 import { ReviewWall } from "./ReviewWall";
 import { Reveal } from "./motion/Reveal";
 import { HeroIn } from "./motion/HeroIn";
-import type { CategoryId } from "@/content/site";
+import type { CategoryId, LoadId } from "@/content/site";
 
 export function SectionHeading({
   eyebrow,
@@ -132,6 +132,7 @@ export function PageHero({
   image,
   imageAlt,
   defaultService,
+  defaultLoad,
   formOnPage = true,
 }: {
   h1: string;
@@ -141,6 +142,7 @@ export function PageHero({
   image: string;
   imageAlt: string;
   defaultService?: CategoryId;
+  defaultLoad?: LoadId;
   formOnPage?: boolean;
 }) {
   return (
@@ -170,7 +172,7 @@ export function PageHero({
           </div>
         </div>
         <HeroIn from="right" delay={0.1} className="mx-auto w-full max-w-md lg:ml-auto">
-          <QuoteEstimator defaultService={defaultService} formOnPage={formOnPage} />
+          <QuoteEstimator defaultService={defaultService} defaultLoad={defaultLoad} formOnPage={formOnPage} />
         </HeroIn>
       </div>
     </section>
@@ -552,13 +554,13 @@ export function RelatedServices({ category, exclude }: { category: Category; exc
         <h2 className="h-display max-w-3xl text-[30px] leading-tight text-ink-800 sm:text-[36px]">More than one thing to clear? We take it all in one trip.</h2>
         <div className="mt-10 grid border-t border-line sm:grid-cols-2 sm:gap-x-10 lg:grid-cols-3">
           {list.map((s) => (
-            <Link key={s.slug} href={`/${s.slug}`} className="group flex items-start justify-between gap-4 border-b border-line py-5">
+            <div key={s.slug} className="group relative flex items-start justify-between gap-4 border-b border-line py-5">
               <span>
-                <span className="block font-display text-[20px] text-ink-800 group-hover:text-brand-ink">{s.name}</span>
+                <Link href={`/${s.slug}`} className="block font-display text-[20px] text-ink-800 after:absolute after:inset-0 group-hover:text-brand-ink">{s.name}</Link>
                 <span className="mt-1 block text-[14px] leading-relaxed text-muted">{s.summary}</span>
               </span>
               <ArrowRight className="mt-1.5 h-4 w-4 shrink-0 text-muted transition group-hover:translate-x-0.5 group-hover:text-brand-ink" aria-hidden />
-            </Link>
+            </div>
           ))}
         </div>
       </div>

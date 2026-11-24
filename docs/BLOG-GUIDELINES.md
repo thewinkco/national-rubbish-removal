@@ -11,6 +11,7 @@ The blog lives at `/blog`. Each post is one TypeScript file in `src/content/blog
 A post earns its place only if it answers a question people really type into Google or ask ChatGPT, and it leads to a service we sell.
 
 - Start from a real question. Good sources: Google's "People also ask" box, Google autocomplete, the questions customers ask on the phone or WhatsApp, and Search Console queries (Performance > Queries) where we get impressions but few clicks.
+- **Never target a service page's keyword.** "Green waste removal sydney" belongs to /green-waste-removal; the post targets "how to get rid of green waste sydney" and links up to the service page with words like "book green waste removal". Two pages chasing the same phrase split the ranking between them.
 - One post answers **one main question**. Make that question the primary keyword (`primaryKeyword`), e.g. "how to dispose of a mattress sydney".
 - Every post links to at least one service page (`services: [...]`), and that service page then links back to the post automatically ("Helpful guides").
 - Check the topic isn't already covered. Two posts on the same question compete against each other. Update the old post instead.

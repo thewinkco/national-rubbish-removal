@@ -1,4 +1,5 @@
-import type { CategoryId } from "./site";
+import type { CategoryId, LoadId } from "./site";
+import type { Faq } from "./faqs";
 
 export type Category = {
   id: CategoryId;
@@ -63,6 +64,10 @@ export type Service = {
   imageAlt?: string;
   /** Short line shown under the "Sound familiar?" photo. */
   imageCaption?: string;
+  /** Load size the hero estimator opens on (default ¼ truck). Single-item services open on "single-item". */
+  defaultLoad?: LoadId;
+  /** Service-specific FAQs, shown (and marked up) before a couple of the general ones. */
+  faqs?: Faq[];
 };
 
 export const SERVICES: Service[] = [
@@ -186,6 +191,33 @@ export const SERVICES: Service[] = [
       "Left outside, it gets wet, heavy and harder to recycle.",
     ],
     takes: ["Single to king mattresses", "Bed bases & ensembles", "Bed frames & headboards", "Cots & bunk beds", "Mattress toppers", "The rest of the bedroom, too"],
+    defaultLoad: "single-item",
+    faqs: [
+      {
+        q: "How much does mattress removal cost?",
+        a: "A single mattress is priced as a single item. Pick \"Single Item\" in the estimator above for your price range, or send a photo for a fixed price. Adding the bed base or a few other items to the same pickup costs little extra.",
+      },
+      {
+        q: "Will the council take my old mattress?",
+        a: "Most Sydney councils collect mattresses in their booked household clean-ups, but you usually wait for a set date, there are limits on numbers, and you carry it to the kerb yourself. Our guide on [how to dispose of a mattress in Sydney](/blog/how-to-dispose-of-a-mattress-sydney) compares every option.",
+      },
+      {
+        q: "Do you take bed bases, ensembles and frames too?",
+        a: "Yes. Bed bases, ensembles, frames, bedheads, cots and bunk beds go in the same trip. We dismantle them on site if they won't fit through the door in one piece.",
+      },
+      {
+        q: "Can you collect from an apartment or upstairs?",
+        a: "Yes. We carry it from any room, down stairs or the lift, or from the basement car park. Let us know about stairs or lift bookings when you ask for a quote.",
+      },
+      {
+        q: "Are old mattresses recycled?",
+        a: "Where possible, yes. We take mattresses to facilities that send them for recycling, where the steel springs, foam, timber and fabric are recovered instead of going to landfill.",
+      },
+      {
+        q: "Can you pick it up today?",
+        a: "Usually. Book before 1pm and we can often collect the same day anywhere in the Sydney Metro area.",
+      },
+    ],
   },
   // ── Commercial ───────────────────────────────────────────
   {

@@ -26,6 +26,8 @@ export function businessSchema() {
       postalCode: SITE.address.postcode,
       addressCountry: "AU",
     },
+    geo: { "@type": "GeoCoordinates", latitude: SITE.geo.latitude, longitude: SITE.geo.longitude },
+    hasMap: SITE.googleMapsCid,
     priceRange: "$$",
     currenciesAccepted: "AUD",
     description:
@@ -127,7 +129,7 @@ export function serviceSchema(opts: { name: string; description: string; path: s
 export function webPageSchema(opts: { path: string; name: string; description: string; type?: string }) {
   return {
     "@type": opts.type ?? "WebPage",
-    "@id": `${abs(opts.path)}#webpage`,
+    "@id": `${opts.path === "/" ? `${SITE.url}/` : abs(opts.path)}#webpage`,
     url: abs(opts.path),
     name: opts.name,
     description: opts.description,
@@ -168,8 +170,8 @@ export function blogPostingSchema(opts: {
   keywords: string[];
   section: string;
   author: { name: string; kind: "Organization" | "Person"; role: string; image?: string };
-  /** Service URLs the article is about, so search engines connect the guide to the business offer. */
-  about: string[];
+  /** Services the article is about, linked to each service page's Service node so search engines connect the guide to the offer. */
+  about: { path: string; name: string }[];
 }) {
   const url = abs(opts.path);
   const author =
@@ -193,7 +195,7 @@ export function blogPostingSchema(opts: {
     keywords: opts.keywords.join(", "),
     wordCount: opts.wordCount,
     inLanguage: "en-AU",
-    about: opts.about.map((u) => ({ "@type": "Service", url: abs(u) })),
+    about: opts.about.map((s) => ({ "@type": "Service", "@id": `${abs(s.path)}#service`, name: s.name, url: abs(s.path) })),
     // Marks the quick answer and key takeaways as the parts voice assistants should read aloud.
     speakable: { "@type": "SpeakableSpecification", cssSelector: ["[data-speakable]"] },
   };

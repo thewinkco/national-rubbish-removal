@@ -15,7 +15,6 @@ const CALLOUT = {
 
 /** Renders a post body. Paragraph and list styling comes from .prose-nrr / .article-body in globals.css. */
 export function ArticleBody({ blocks }: { blocks: BlogBlock[] }) {
-  let imageIndex = 0;
   return (
     <div className="prose-nrr article-body">
       {blocks.map((b, i) => {
@@ -31,11 +30,10 @@ export function ArticleBody({ blocks }: { blocks: BlogBlock[] }) {
           case "steps":
             return <ol key={i}>{b.items.map((t, j) => <li key={j}><Inline text={t} /></li>)}</ol>;
           case "image": {
-            imageIndex++;
             return (
               <figure key={i} className="my-10">
                 <div className="relative aspect-[3/2] overflow-hidden rounded-2xl bg-mist">
-                  <Image src={b.src} alt={b.alt} fill sizes="(min-width: 1024px) 720px, 100vw" className="object-cover" loading={imageIndex === 1 ? "eager" : "lazy"} />
+                  <Image src={b.src} alt={b.alt} fill sizes="(min-width: 1024px) 720px, 100vw" className="object-cover" />
                 </div>
                 {b.caption && <figcaption className="mt-3 text-[14px] leading-relaxed text-muted">{b.caption}</figcaption>}
               </figure>

@@ -55,8 +55,12 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   trailingSlash: false,
   images: {
-    // Images in public/ are already compressed WebP; skipping on-the-fly optimisation saves CPU on shared hosting.
-    unoptimized: true,
+    // No on-the-fly resizing (saves CPU on shared hosting). Instead, scripts/image-variants.mjs pre-builds
+    // 256/640/1080/1600px WebP copies before every build, and this loader points srcset at them.
+    loader: "custom",
+    loaderFile: "./src/lib/image-loader.ts",
+    deviceSizes: [640, 828, 1080, 1200, 1600, 1920],
+    imageSizes: [96, 128, 256, 384],
   },
   async redirects() {
     return [

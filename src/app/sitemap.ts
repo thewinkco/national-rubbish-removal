@@ -22,9 +22,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ["/terms", 0.2, "yearly"],
   ];
   return [
-    ...core.map(([path, priority, changeFrequency]) => ({ url: url(path), priority, changeFrequency })),
-    ...SERVICES.map((s) => ({ url: url(`/${s.slug}`), priority: 0.9, changeFrequency: "monthly" as const })),
-    ...SUBURBS.map((s) => ({ url: url(`/${s.slug}`), priority: 0.8, changeFrequency: "monthly" as const })),
+    ...core.map(([path, priority, changeFrequency]) => ({ url: url(path), lastModified: SITE.pagesUpdated, priority, changeFrequency })),
+    ...SERVICES.map((s) => ({ url: url(`/${s.slug}`), lastModified: SITE.pagesUpdated, priority: 0.9, changeFrequency: "monthly" as const })),
+    ...SUBURBS.map((s) => ({ url: url(`/${s.slug}`), lastModified: SITE.pagesUpdated, priority: 0.8, changeFrequency: "monthly" as const })),
     ...POSTS.map((p) => ({
       url: url(`/blog/${p.slug}`),
       lastModified: p.updated,

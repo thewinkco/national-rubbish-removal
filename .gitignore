@@ -44,3 +44,6 @@ next-env.d.ts
 # static deploy archive (rebuild from out/)
 *.zip
 
+
+# generated image sizes (scripts/image-variants.mjs, runs before every build)
+/public/_img/

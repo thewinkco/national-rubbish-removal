@@ -11,7 +11,7 @@ export const post: BlogPost = {
   excerpt: "A one-day plan to get your car back in the garage: what to sort first, what to keep, and how to get rid of the rest without a skip.",
   category: "How-To Guides",
   primaryKeyword: "garage clean out checklist",
-  keywords: ["how to clean out a garage", "garage clean out sydney", "garage declutter tips", "garage junk removal", "what to do with garage junk"],
+  keywords: ["how to clean out a garage", "garage declutter checklist", "garage declutter tips", "garage junk removal", "what to do with garage junk"],
   published: "2026-11-24",
   updated: "2026-11-24",
   author: "nrr-crew",

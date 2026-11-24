@@ -13,6 +13,8 @@ export const SITE = {
   email: "info@nationalrubbishremoval.com.au",
   emailHref: "mailto:info@nationalrubbishremoval.com.au",
   areaServed: "Sydney Metro Area",
+  /** Date the core, service and suburb pages were last meaningfully updated (sitemap lastmod). Bump on real edits. */
+  pagesUpdated: "2026-11-24",
   address: {
     street: "12/57 Allingham St",
     suburb: "Condell Park",
@@ -20,6 +22,9 @@ export const SITE = {
     postcode: "2200",
     full: "12/57 Allingham St, Condell Park NSW 2200",
   },
+  // Street-level coordinates for Allingham St, Condell Park (OpenStreetMap). Swap in the exact pin from the
+  // Google Business Profile if it differs.
+  geo: { latitude: -33.9198, longitude: 151.0014 },
   googleMapsCid: "https://maps.google.com/maps?cid=6280977622235014153",
   googleReviewsUrl:
     "https://search.google.com/local/reviews?placeid=ChIJG8AWv4ByiqwRCeR-j96DKlc",

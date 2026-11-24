@@ -29,15 +29,18 @@ export type EstimateDetail = { service: CategoryId; size: LoadId };
  */
 export function QuoteEstimator({
   defaultService = "residential-rubbish-removal",
+  defaultLoad = "quarter",
   variant = "full",
   formOnPage = true,
 }: {
   defaultService?: CategoryId;
+  /** Load size the estimator opens on. */
+  defaultLoad?: LoadId;
   variant?: "full" | "compact";
   formOnPage?: boolean;
 }) {
   const [service, setService] = useState<CategoryId>(defaultService);
-  const [size, setSize] = useState<LoadId>("quarter");
+  const [size, setSize] = useState<LoadId>(defaultLoad);
   const quote = calculateQuote(service, size);
   const fill = Math.min((quote.load.m3 / FULL_LOAD_M3) * 100, 100);
   const compact = variant === "compact";

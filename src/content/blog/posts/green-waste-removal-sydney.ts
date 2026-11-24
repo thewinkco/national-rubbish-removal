@@ -11,13 +11,13 @@ const range = (load: (typeof LOAD_SIZES)[number]["id"]) => {
 
 export const post: BlogPost = {
   slug,
-  title: "Green Waste Removal Sydney: Options, Rules and Costs",
+  title: "How to Get Rid of Green Waste in Sydney: Options and Costs",
   h1: "How to Get Rid of Green Waste in Sydney, Fast",
   description: `Branches, palm fronds and clippings piling up? Compare your green bin, council pick-up and a removalist in Sydney, with limits and prices from ${formatPrice(res.minCharge)}.`,
   excerpt: "Your green bin takes the small stuff. Here is what to do with palm fronds, big branches and a whole backyard of clippings, and what each option costs.",
   category: "How-To Guides",
-  primaryKeyword: "green waste removal sydney",
-  keywords: ["how to get rid of green waste sydney", "garden waste removal sydney", "palm fronds disposal sydney", "tree branch removal sydney", "green waste pick up sydney"],
+  primaryKeyword: "how to get rid of green waste sydney",
+  keywords: ["green waste disposal sydney", "garden waste removal sydney", "palm fronds disposal sydney", "tree branch removal sydney", "green waste pick up sydney"],
   published: "2026-11-24",
   updated: "2026-11-24",
   author: "nrr-crew",

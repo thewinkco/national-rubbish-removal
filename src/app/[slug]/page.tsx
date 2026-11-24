@@ -82,6 +82,8 @@ function ServicePage({ service }: { service: Service }) {
   const category = getCategory(service.category);
   const { body } = splitLegacy(service.slug);
   const path = `/${service.slug}`;
+  // Service-specific questions first, then the two general ones (how it works, same day).
+  const faqs = service.faqs ? [...service.faqs, ...GENERAL_FAQS.slice(0, 2)] : GENERAL_FAQS;
   const crumbs = [
     { name: "Home", path: "/" },
     { name: "Services", path: "/services" },
@@ -95,7 +97,7 @@ function ServicePage({ service }: { service: Service }) {
           webPageSchema({ path, name: service.title, description: service.description }),
           serviceSchema({ name: service.h1, description: service.description, path, categoryId: service.category }),
           breadcrumbSchema(crumbs),
-          faqSchema(GENERAL_FAQS),
+          faqSchema(faqs.map((f) => ({ q: f.q, a: plain(f.a) }))),
         )}
       />
       <PageHero
@@ -105,6 +107,7 @@ function ServicePage({ service }: { service: Service }) {
         image={service.image ?? category.image}
         imageAlt={service.imageAlt ?? category.imageAlt}
         defaultService={service.category}
+        defaultLoad={service.defaultLoad}
       />
 
       <PainPoints
@@ -170,7 +173,7 @@ function ServicePage({ service }: { service: Service }) {
       <RelatedGuides serviceSlug={service.slug} serviceName={service.name} />
       <CtaBand title={`Ready for ${service.name.toLowerCase()}? It could be gone today.`} body="Book before 1pm for same day pickup. Price locked before we lift a thing." />
       <AreasGrid title={`${service.name} across Sydney`} />
-      <FaqList faqs={GENERAL_FAQS} />
+      <FaqList faqs={faqs} title={service.faqs ? `${service.name}: your questions answered` : undefined} />
       <QuoteSection defaultService={service.category} context={service.name} title={`Get your ${service.name.toLowerCase()} price`} />
     </>
   );
