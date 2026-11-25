@@ -14,7 +14,7 @@ The blog routine takes the FIRST unticked line (`- [ ]`) on each run, writes it,
 
 ## December sprint (in order)
 - [x] How to Get Rid of Green Waste in Sydney, Fast (green waste removal sydney) → /green-waste-removal
-- [ ] Best Rubbish Removal in Sydney? 9 Checks Before You Book (best rubbish removal sydney) → /quote-estimator, /household-rubbish-removal
+- [x] Best Rubbish Removal in Sydney? 9 Checks Before You Book (best rubbish removal sydney) → /quote-estimator, /household-rubbish-removal
 - [ ] End of Lease Rubbish Removal Checklist: Get Your Bond Back (end of lease checklist sydney) → /end-of-lease-rubbish-removal
 - [ ] How to Dispose of an Old Fridge or Washing Machine in Sydney (fridge disposal sydney) → /household-rubbish-removal
 - [ ] Christmas Clear-Out: Make Room Before the Holidays (christmas clean up rubbish removal) → /household-rubbish-removal, /garage-clean-out

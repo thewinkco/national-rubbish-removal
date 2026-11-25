@@ -117,7 +117,7 @@ export const post: BlogPost = {
     },
     {
       type: "p",
-      text: "The best rubbish removal quote isn't always the cheapest one. It's the one that puts the lifting, tip fees and sweep-up in writing, from an insured crew with real local reviews. A cheap price without those has a habit of growing on the day.",
+      text: "The best rubbish removal quote isn't always the cheapest one. It's the one that puts the lifting, tip fees and sweep-up in writing, from an insured crew with real local reviews. A cheap price without those has a habit of growing on the day. Our [9 checks before you book](/blog/best-rubbish-removal-sydney) walk through how to compare quotes.",
     },
     { type: "review", name: "Roxy Rox" },
     { type: "h2", text: "How do I get an exact price?" },

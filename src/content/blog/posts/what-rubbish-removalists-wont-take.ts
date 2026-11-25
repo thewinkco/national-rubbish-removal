@@ -119,7 +119,7 @@ export const post: BlogPost = {
     {
       type: "cta",
       title: "Not sure about an item?",
-      text: "WhatsApp us a photo and we'll tell you straight whether we can take it, and if not, where it should go.",
+      text: "WhatsApp us a photo and we'll tell you straight whether we can take it, and if not, where it should go. Choosing a crew? Here are [9 checks before you book a Sydney rubbish removal company](/blog/best-rubbish-removal-sydney).",
     },
   ],
   faqs: [
