@@ -44,7 +44,7 @@ export const post: BlogPost = {
     { type: "h2", text: "Who is allowed to clear a deceased estate?" },
     {
       type: "p",
-      text: "The **executor** named in the will is responsible for the deceased's belongings. If there's no will, a family member usually applies to become the **administrator**. Before clearing the home, make sure the executor has agreed, the will has been read, and any specific gifts (\"my watch to my grandson\") are set aside. If the home is rented, check the lease end date with the agent so you know your timeline. An [end of lease clear-out](/end-of-lease-rubbish-removal) can be booked around the handback date.",
+      text: "The **executor** named in the will is responsible for the deceased's belongings. If there's no will, a family member usually applies to become the **administrator**. Before clearing the home, make sure the executor has agreed, the will has been read, and any specific gifts (\"my watch to my grandson\") are set aside. If the home is rented, check the lease end date with the agent so you know your timeline. An [end of lease clear-out](/end-of-lease-rubbish-removal) can be booked around the handback date, and our [end of lease checklist](/blog/end-of-lease-checklist-sydney) shows how the NSW bond rules work.",
     },
     { type: "h2", text: "What should I do first?" },
     {
