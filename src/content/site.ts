@@ -91,7 +91,7 @@ export const JOB_TYPES: { id: JobType; label: string; blurb: string; category: C
     label: "Household",
     blurb: "Furniture, junk, clutter & clean-outs",
     category: "residential-rubbish-removal",
-    tiers: { single: [180], 1: [220], 2: [360], 3: [520], 4: [690], 5: [840], 6: [980], 7: [1120], 8: [1250] },
+    tiers: { single: [249], 1: [289], 2: [360], 3: [520], 4: [690], 5: [840], 6: [980], 7: [1120], 8: [1250] },
   },
   {
     id: "green-waste-removal",
