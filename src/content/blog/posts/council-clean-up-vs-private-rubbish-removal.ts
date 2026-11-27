@@ -75,7 +75,7 @@ export const post: BlogPost = {
     {
       type: "list",
       items: [
-        "**You're on a deadline.** Moving out, an [end of lease](/end-of-lease-rubbish-removal), a property settlement or an inspection this week.",
+        "**You're on a deadline.** Moving out, an [end of lease](/end-of-lease-rubbish-removal) (see our [end of lease checklist](/blog/end-of-lease-checklist-sydney)), a property settlement or an inspection this week.",
         "**There's too much.** A full [garage clean-out](/garage-clean-out) or [deceased estate](/deceased-estate-clearance) is often several times the council limit.",
         "**It's not household waste.** Renovation offcuts, rubble and site waste are usually excluded from council clean-ups.",
         "**You can't carry it.** Stairs, heavy items, health issues or no help on hand.",

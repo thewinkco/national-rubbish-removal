@@ -13,6 +13,14 @@ const OUT = path.join(SRC, "blog");
 
 // slug -> { cover: source, inline: { "output-name": source } }
 const MAP = {
+  "end-of-lease-checklist-sydney": {
+    // Hermes image generation was unavailable on this run, so all images come from the library
+    cover: "home/furniture-removal-crew-carrying-couch-sydney.webp",
+    inline: {
+      "moving-out-rubbish-removal-sydney": "home/moving-out-rubbish-removal-sydney.webp",
+      "empty-space-swept-after-end-of-lease-rubbish-removal": "commercial/end-of-lease-rubbish-removal-sydney.webp",
+    },
+  },
   "best-rubbish-removal-sydney": {
     // Hermes image generation was unavailable on this run, so all images come from the library
     cover: "about/national-rubbish-removal-team.webp",
